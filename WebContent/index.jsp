@@ -27,6 +27,7 @@
 	<!-- Core theme CSS (includes Bootstrap)-->
 	<link href="/spoMatch/css/loginForm.css" rel="stylesheet" />
 	<!-- 카카오톡 API -->
+	<!-- 까까오똑 용민 -->
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 		<!--로그인 기능 스크립트-->
 	<script defer type="text/javascript" src="/spoMatch/js/loginForm.js"></script>
