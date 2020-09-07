@@ -21,7 +21,7 @@
         <div class="header_pic">
             <div><img class="header_pic1" src="img/loginOK/header/header4.jpg" /></div>
             <div class="header_pic2"></div>
-            <div><img src="img/loginOK/header/header5.jpg" /></div>
+            <div class="header_pic3"><img src="img/loginOK/header/header5.jpg" /></div>
         </div>
         <!--글자부분-->
         <div class="header_text">
