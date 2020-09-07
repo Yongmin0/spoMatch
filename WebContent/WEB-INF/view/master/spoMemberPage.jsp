@@ -62,7 +62,7 @@ function acyncMovePage3(url) {
 	endVar = document.getElementById("endDate").value;
 	endVar = endVar.replace(/-/gi, "");
 
-	//입력한 값이 오늘날짜보다 클때 경우 처리 메소드
+	//입력한 값이 오늘날짜보다 클때 경우 처리 메소드 데스요 
 	var dt = new Date();
 	var yyyy = dt.getFullYear();
 	var mm = "" + (dt.getMonth() + 1);
