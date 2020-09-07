@@ -1,0 +1,51 @@
+@charset "UTF-8";
+h2 {
+	margin-bottom: 0.5rem;
+    font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: 500;
+    line-height: 1.2;
+}
+hr.divider {
+    max-width: 6.25rem;
+    border-width: 0.2rem;
+    border-color: #E67F85;
+}
+.weight-text{
+	margin-bottom: 2rem;
+}
+.weight_insertDiet{
+	text-align:-webkit-center;
+}
+.form-control {
+	display : inline-block;
+    width: 25%;
+    border-radius: .25rem;
+    text-align: center;
+}
+.btn-primary{
+	background-color: #548BA1;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #286B7B;
+    border-color: #226575;
+}
+.btn-primary:focus, .btn-primary.focus {
+  color: #fff;
+  background-color: #286B7B;
+  border-color: #226575;
+  box-shadow: 0 0 0 0.2rem rgba(31, 94, 147, 0.5);
+}
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff;
+  background-color: #1b517e;
+  border-color: #1b517e;
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #28577d;
+  border-color: #275478;
+}
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(31, 94, 147, 0.5);
+}

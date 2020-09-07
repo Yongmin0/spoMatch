@@ -1,0 +1,166 @@
+@charset "UTF-8";
+section{
+	padding-bottom: 50px
+}
+h1{
+	width:auto;
+	margin-bottom : 20px;
+	border-bottom: 1px solid #E67F85;
+	border-bottom-width : 0.2rem;
+}
+label{
+	margin-bottom: 0.5rem;
+}
+
+.card {
+	padding: 50px;
+	background-color: #f1f1f1;
+}
+.form-required {
+    color: #cd201f;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.form-control:focus, .btn:focus {
+  border-color: #CBE3EE;
+  box-shadow: 0 0 0 0.2rem rgba(150, 196, 216, 0.25);
+}
+
+.btn:hover, .btn:focus {
+    text-decoration: none;
+}
+.btn {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    display: inline-block;
+    padding: .625rem 1.25rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.btn {
+    font-size: .875rem;
+    position: relative;
+    transition: all .15s ease;
+    letter-spacing: .025em;
+    text-transform: uppercase;
+    will-change: transform;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+.btn:not(:last-child) {
+    margin-right: .5rem;
+}
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+.btn:not(:disabled):not(.disabled):active, .btn:not(:disabled):not(.disabled).active {
+    box-shadow: none;
+}
+
+.btn-primary
+{
+    color: #fff;
+    border-color: #5e72e4;
+    background-color: #5e72e4;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+.btn-primary:hover
+{
+    color: #fff;
+    border-color: #5e72e4; 
+    background-color: #5e72e4;
+}
+.btn-primary:focus,
+.btn-primary.focus
+{
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08), 0 0 0 0 rgba(94, 114, 228, .5);
+}
+.btn-primary.disabled,
+.btn-primary:disabled
+{
+    color: #fff;
+    border-color: #5e72e4; 
+    background-color: #5e72e4;
+}
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle
+{
+    color: #fff;
+    border-color: #5e72e4; 
+    background-color: #324cdd;
+}
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus
+{
+    box-shadow: none, 0 0 0 0 rgba(94, 114, 228, .5);
+}
+.btn-neutral
+{
+    color: #212529;
+    border-color: #fff;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+.btn-neutral:hover
+{
+    color: #212529;
+    border-color: white; 
+    background-color: white;
+}
+.btn-neutral:focus,
+.btn-neutral.focus
+{
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08), 0 0 0 0 rgba(255, 255, 255, .5);
+}
+.btn-neutral.disabled,
+.btn-neutral:disabled
+{
+    color: #212529;
+    border-color: #fff; 
+    background-color: #fff;
+}
+.btn-neutral:not(:disabled):not(.disabled):active,
+.btn-neutral:not(:disabled):not(.disabled).active,
+.show > .btn-neutral.dropdown-toggle
+{
+    color: #212529;
+    border-color: white; 
+    background-color: #e6e6e6;
+}
+.btn-neutral:not(:disabled):not(.disabled):active:focus,
+.btn-neutral:not(:disabled):not(.disabled).active:focus,
+.show > .btn-neutral.dropdown-toggle:focus
+{
+    box-shadow: none, 0 0 0 0 rgba(255, 255, 255, .5);
+}

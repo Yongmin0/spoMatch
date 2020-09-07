@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- VO alias -->
+<configuration>
+	<typeAliases>
+		<!-- 문성아 VO -->
+		<typeAlias type="kosmo62.spomatch.match.vo.SpoMatchVO" alias="SpoMatchVO"/>		
+		<typeAlias type="kosmo62.spomatch.apply.vo.SpoApplyVO" alias="SpoApplyVO"/>		
+		<typeAlias type="kosmo62.spomatch.chat.vo.SpoChatVO" alias="SpoChatVO"/>
+		<!-- 김예슬 VO -->
+		<typeAlias type="kosmo62.spomatch.comment.vo.SpoCommentVO" alias="SpoCommentVO"/>	
+		<typeAlias type="kosmo62.spomatch.tipboard.vo.SpoTipBoardVO" alias="SpoTipBoardVO"/>			
+		<typeAlias type="kosmo62.spomatch.login.vo.SpoLoginVO" alias="SpoLoginVO"/>
+		<!-- 김우상  VO -->
+		<typeAlias type="kosmo62.spomatch.notice.vo.SpoNoticeVO" alias="SpoNoticeVO"/>		
+		<typeAlias type="kosmo62.spomatch.master.vo.SpoMasterVO" alias="SpoMasterVO"/>		
+		<!-- 정인혜 VO -->
+		<typeAlias alias="SpoQuestionVO" type="kosmo62.spomatch.question.vo.SpoQuestionVO"/>
+		<typeAlias alias="SpoAnswerVO" type="kosmo62.spomatch.answer.vo.SpoAnswerVO"/>
+		<!-- 이용민 VO -->
+		<typeAlias type="kosmo62.spomatch.member.vo.SpoMemberVO" alias="SpoMemberVO"/>	
+		<typeAlias type="kosmo62.spomatch.kmap.vo.SpoKmapVO" alias="SpoKmapVO"/>
+		<!-- 조찬익 VO -->
+		<typeAlias type="kosmo62.spomatch.diet.vo.SpoDietVO" alias="SpoDietVO"/>			
+		<typeAlias type="kosmo62.spomatch.workout.vo.SpoWorkoutVO" alias="SpoWorkoutVO"/>	
+	</typeAliases>
+</configuration>		

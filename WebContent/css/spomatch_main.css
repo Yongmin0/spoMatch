@@ -1,0 +1,224 @@
+:root {
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #f4623a;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --primary: #f4623a;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-family-kalam: 'Kalam', cursive;
+    --font-family-noto: 'Noto Sans KR', sans-serif;
+    --font-family-nanum: 'Nanum Gothic', sans-serif;
+  }
+
+*
+{
+    margin: 0px;
+    padding: 0px;
+}
+/*헤더부분*/
+#header
+{
+    position: relative;
+}
+
+.header_pic
+{
+    display: flex;
+    width: calc(100% - 0px);
+    min-width: 980px;
+}
+.header_pic div
+{
+    width: 100%;
+    min-height: 808px;
+    height: auto;
+}
+.header_pic img
+{
+    width: 100%;
+}
+.header_text
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%, -50%);
+    color: var(--white);
+    text-align: center;
+}
+.header_text .main_text
+{
+    font-size: 157px;
+    letter-spacing: 0.5px;
+    font-family: var(--font-family-monospace);
+}
+section {
+	padding-top: 0px; */
+}
+/*gallery부분*/
+.gallery
+{
+    width: 1077px;
+    height: 500px;
+    margin: 0px auto;
+    position: relative;
+}
+.gallery_subject
+{
+    text-align: center;
+    font-size: 50px;
+    font-weight: 700;
+    margin: 80px 0px;
+}
+.gallery_background
+{
+    position: relative;
+    display: flex;
+    width: 90%;
+    height: 500px;
+    margin: 40px;
+}
+.gallery_background1
+{
+
+    width:50%;
+    height:50%;
+    background-color: transparent;
+}
+.gallery_background2
+{
+    
+    width: 49%;
+    height: 500px;
+    background-color: #FF7300;
+
+}
+.gallery img
+{
+    width: 100%;
+}
+.gallery .gallery_first
+{
+    position: absolute;
+    top: -490px;
+    display: flex;
+    padding: 5px;
+    left: -50;
+    min-width: 980px;
+    height: auto;
+}
+.gallery .gallery_first .first_1,.first_2
+{
+    margin: 0px 20px;
+}
+
+.gallery .gallery_second
+{
+    position: absolute;
+    top: -90px;
+    display: flex;
+    padding: 10px;
+    width: 100%;
+    min-height: 808px;
+    height: auto;
+}
+.gallery .gallery_second .second_1, .second_2
+{
+    margin: 0px 15px;
+}
+.Method
+{
+    width: 100%;
+    min-width: 820px;
+    height: 920px;
+}
+.method_subject
+{
+    text-align: center;
+    font-size: 50px;
+    font-weight: 700;
+    margin: 80px 0px;
+}
+.method_background
+{
+    position: relative;
+    display: flex;
+    width: 90%;
+    height: 500px;
+    margin-bottom: 200px;
+}
+.method_background1
+{
+
+    width:70%;
+    height:400px;
+    background-color: var(--dark);
+}
+.method_background2
+{
+    width: 39%;
+    height: 50%;
+    background-color: transparent;
+}
+.Method_info
+{
+    display: flex;
+    position: relative;
+    top: -370px;
+    left: 15%;
+    transform:translate(-50%, -50%);
+    width: 870px;
+    height: auto;
+    margin: 0px auto;
+}
+.Method_info .info
+{
+    margin: 0px 35px;
+    width: 30%;
+    text-align: center;
+}
+.Method_info .info_pic1,.info_pic2,.info_pic3
+{
+    width: 150%;
+    height: auto;
+    min-height: 383px;
+}
+.Method_info .info_pic4
+{
+    width: 80%;
+    height: auto;
+    min-height: 383px;
+}
+.Method_info .info .info_subject
+{
+    font-size: 28px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+.Method_info .info .info_text
+{
+    font-family: var(--font-family-noto);
+    letter-spacing: 0.5px;
+}

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kosmo62.spomatch.workout.dao.SpoWorkoutMapper">
+
+	<!-- ==================== 부위에 따라 운동 조회하기 ====================-->
+	<select id="selectExercise" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+		    A.SES_NO,
+		    A.SES_NAME,
+		    A.SES_IMG,
+		    A.SES_EXPLAIN
+		FROM 
+		    SPOMATCH_EXERCISE A
+		WHERE 
+		    A.SES_NO = #{ses_no}
+		ORDER BY A.SES_IMG
+	</select>
+	
+	<!-- ==================== 선택한 운동 정보 조회 ==================== -->	
+	<select id="exerciseInfo" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+		    A.SES_NO,
+		    A.SES_NAME,
+		    A.SES_IMG,
+		    A.SES_EXPLAIN
+		FROM 
+		    SPOMATCH_EXERCISE A
+		WHERE
+		    A.SES_NAME = #{ses_name}
+	</select>
+	
+	<!-- ==================== 선택한 운동의 루틴 입력 ==================== -->
+	<insert id="insertWorkout" parameterType="SpoWorkoutVO">
+		<selectKey keyProperty="swo_no" resultType="String" order="BEFORE">
+				SELECT 
+				    'W'|| LPAD(
+				    (SELECT /*+ INDEX_DESC(A.WORKOUT_NO_PK) */        
+				     NVL(MAX(SUBSTR(SWO_NO,-5)),0)+1   
+				     FROM SPOMATCH_WORKOUT A),5,'0') 
+				FROM 
+				    DUAL
+			</selectKey>
+		INSERT INTO SPOMATCH_WORKOUT
+		(
+		    SWO_NO,
+		    SWO_NAME,
+		    SWO_WEIGHT,
+		    SWO_SETS,
+		    SWO_COUNT,
+		    SWO_WORKOUTDATE,
+		    SWO_DELETEYN,
+		    SWO_INSERTDATE,
+		    SWO_UPDATEDATE,
+		    SMB_NO
+		)
+		VALUES
+		(
+		    #{swo_no},
+		    #{swo_name},
+		    #{swo_weight},
+		    #{swo_sets},
+		    #{swo_count},
+		    TO_DATE(#{swo_workoutdate}),
+		    'Y',
+		    SYSDATE,
+		    SYSDATE,
+		    #{smb_no}
+		)
+	</insert>
+	
+	<select id="eventsWorkout" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+		    A.SWO_NO,
+		    A.SWO_NAME,
+		    A.SWO_WEIGHT,
+		    A.SWO_SETS,
+		    A.SWO_COUNT,
+		    TO_CHAR(A.SWO_WORKOUTDATE,'yyyy-MM-dd HH:mm:ss') AS SWO_WORKOUTDATE,
+		    A.SWO_DELETEYN,
+		    A.SWO_INSERTDATE,
+		    A.SWO_UPDATEDATE,
+		    A.SMB_NO,
+		    B.SMB_WEIGHT,
+		    B.SMB_G_WEIGHT
+		FROM
+		    SPOMATCH_WORKOUT A , (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+		WHERE
+		    A.SWO_DELETEYN = 'Y'
+		AND 
+		    A.SMB_NO = #{smb_no}
+	</select>
+	
+	<update id="deleteWorkout" parameterType="SpoWorkoutVO">
+		UPDATE
+			SPOMATCH_WORKOUT
+		SET
+			SWO_UPDATEDATE = SYSDATE,
+			SWO_DELETEYN = 'N'
+		WHERE
+			SWO_NO = #{swo_no}
+	</update>
+	
+	<select id="selectCurWeight" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+		    TO_CHAR(A.SCW_DATE,'YYYY/MM/DD') AS SCW_DATE,
+		    A.SCW_CURWEIGHT,
+		    B.SMB_NO,
+		    B.SMB_HEIGHT,
+		    B.SMB_WEIGHT,
+		    B.SMB_G_WEIGHT,
+		    B.SMB_ACTIVITY
+		FROM 
+		    SPOMATCH_CURWEIGHT A , (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+		WHERE
+		    B.SMB_DELETEYN = 'Y'
+		AND
+		    TO_CHAR(A.SCW_DATE,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		AND 
+            A.SMB_NO = #{smb_no}
+	</select>
+	
+	<insert id="insertCurWeight" parameterType="SpoWorkoutVO">
+		INSERT INTO SPOMATCH_CURWEIGHT
+		(
+		    SCW_CURWEIGHT,
+		    SCW_DATE,
+		    SMB_NO
+		)
+		VALUES
+		(   
+		    #{scw_curweight},
+		    SYSDATE,
+		    #{smb_no}
+		)
+	</insert>
+	
+	<select id="selectWeekWeight" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+		    A.SCW_CURWEIGHT,
+		    TO_CHAR(A.SCW_DATE,'YYYY-MM-DD') AS SCW_DATE
+		FROM
+		    SPOMATCH_CURWEIGHT A
+		WHERE
+		    TO_CHAR(TO_DATE(A.SCW_DATE), 'YYYYMMDD') BETWEEN TO_CHAR(SYSDATE-6,'YYYYMMDD') AND TO_CHAR(SYSDATE,'YYYYMMDD')
+		AND 
+			A.SMB_NO = #{smb_no}
+		ORDER BY A.SCW_DATE
+	</select>
+	
+	<select id="selectMember" parameterType="SpoWorkoutVO" resultType="SpoWorkoutVO">
+		SELECT 
+			A.SMB_G_WEIGHT
+		FROM
+			SPOMATCH_MEMBER A
+		WHERE
+			A.SMB_NO = #{smb_no}
+	</select>
+</mapper>

@@ -1,0 +1,174 @@
+@charset "UTF-8";
+*{
+    box-sizing: border-box;
+}
+/*h1 신청 리스트 제목부분*/
+section h1
+{
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+/*게시판 총갯수 부분*/
+section .viewApply_total{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+/*테이블 th 부분(
+신청글 번호	번호	제목	매칭글 작성자	아이디	신청일	수락여부	거주지	상세보기)*/
+section .matchList_table thead tr{
+    width: 100%;
+    height: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #F4F6F9;
+    text-align: center;
+    border-top: 1px solid rgb(212, 212, 212);
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+section .matchList_table th{
+     width: 11%;
+     text-align: center;
+     font-size: 16px;
+     font-weight: 600;
+}
+.matchList_table tbody tr
+{
+    font-size: 14px;
+    text-align: center;
+    background-color: var(--white);
+}
+.matchList_table tbody tr:hover
+{
+	background-color: #E0EAF9;
+	color: var(--gray);
+}
+/*테이블 내용 부분*/
+section .matchList_table tbody tr{
+    height: 50px;
+}
+section .matchList_table tbody tr td{
+    width: 11%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+/*상세보기 버튼*/
+section .viewApplyBtn
+{
+	background-color: #548BA1;
+	color:white;
+    border-style: none;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 70px;
+    height: 35px;
+}
+.board_nondate
+{
+    font-size: 20px;
+    font-family: var(--font-family-noto);
+    font-weight: 600;
+    text-align: center;
+}
+/*======================================================================================================================================*/
+/*마이페이지 HOME버튼 부분*/
+section .container .mypage_home
+{
+    width: 100%;
+    margin-bottom: 20px;
+}
+section .container .mypage_home a
+{
+    display: flex;
+    justify-content: flex-end;
+}
+/*마이페이지 HOME버튼 글씨*/
+section .container .mypage_home a .home_text
+{
+    color: var(--gray-dark);
+    font-weight: 700;
+    line-height: 1.2;
+}
+/*마이페이지 HOME버튼 IMG 아이콘*/
+section .container .mypage_home a img
+{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+/*마이페이지 side menu + content 부분*/
+section .container .mypage_content
+{
+    display: flex;
+    padding-top: 17px;
+    padding-right: 17px;
+    padding-bottom: 17px;
+    padding-left: 80px;
+
+
+}
+/*마이페이지 side menu부분*/
+section .container .mypage_content .mypage_side
+{
+    position: absolute;
+    width: 260px;
+    height: 100%;
+    left: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+section .container .mypage_content .mypage_side img
+{
+    width: 25px;
+}
+/*마이페이지 side menu 각 부분*/
+section .container .mypage_content .mypage_side .icon
+{
+    border-top: 1px solid #cecdce;
+    padding-top: 14px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+/*사이드 메뉴의 메인 글자*/
+section .container .mypage_content .mypage_side .icon_subject
+{
+    width: 200px;
+    height: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 3px;
+    cursor: pointer;
+    color: var(--gray-dark);
+}
+section .container .mypage_content .mypage_side .icon_subject span
+{
+    font-size: 17px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+section .container .mypage_content .mypage_side .icon ul
+{
+    list-style: none;
+    padding-inline-start: 15px;
+}
+section .container .mypage_content .mypage_side .icon a
+{
+    text-decoration: none;
+    color: var(--gray);
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 5px;
+}
+section .container .mypage_content .mypage_side .icon ul li:hover a
+{
+    background-color: #9CB8D6;
+    color: var(--white);
+}
+section .container .mypage_content .mypage_side .icon a,ul li
+{
+    padding: 10px 5px;
+}
+/*======================================================================================================================================*/

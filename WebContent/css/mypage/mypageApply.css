@@ -1,0 +1,232 @@
+@charset "UTF-8";
+
+/*======================================================================================================================================*/
+/*마이페이지 HOME버튼 부분*/
+section .container .mypage_home
+{
+    width: 100%;
+    margin-bottom: 20px;
+}
+section .container .mypage_home a
+{
+    display: flex;
+    justify-content: flex-end;
+}
+/*마이페이지 HOME버튼 글씨*/
+section .container .mypage_home a .home_text
+{
+    color: var(--gray-dark);
+    font-weight: 700;
+    line-height: 1.2;
+}
+/*마이페이지 HOME버튼 IMG 아이콘*/
+section .container .mypage_home a img
+{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+/*마이페이지 side menu + content 부분*/
+section .container .mypage_content
+{
+    display: flex;
+    padding-top: 17px;
+    padding-right: 17px;
+    padding-bottom: 17px;
+    padding-left: 80px;
+
+
+}
+/*마이페이지 side menu부분*/
+section .container .mypage_content .mypage_side
+{
+    position: absolute;
+    width: 260px;
+    height: 100%;
+    left: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+section .container .mypage_content .mypage_side img
+{
+    width: 25px;
+}
+/*마이페이지 side menu 각 부분*/
+section .container .mypage_content .mypage_side .icon
+{
+    border-top: 1px solid #cecdce;
+    padding-top: 14px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+/*사이드 메뉴의 메인 글자*/
+section .container .mypage_content .mypage_side .icon_subject
+{
+    width: 200px;
+    height: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 3px;
+    cursor: pointer;
+    color: var(--gray-dark);
+}
+section .container .mypage_content .mypage_side .icon_subject span
+{
+    font-size: 17px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+section .container .mypage_content .mypage_side .icon ul
+{
+    list-style: none;
+    padding-inline-start: 15px;
+}
+section .container .mypage_content .mypage_side .icon a
+{
+    text-decoration: none;
+    color: var(--gray);
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 5px;
+}
+section .container .mypage_content .mypage_side .icon ul li:hover a
+{
+    background-color: #9CB8D6;
+    color: var(--white);
+}
+section .container .mypage_content .mypage_side .icon a,ul li
+{
+    padding: 10px 5px;
+}
+/*======================================================================================================================================*/
+.mypage-header{
+	width: 100%;
+	height:120px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.mypage-header-select{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	cursor: pointer;
+}
+.mypage-container-header{
+	background-color: #bbd7d6;
+	border-radius: 10px;
+	color: white;
+	height: 70px;
+	text-align: center;
+	align-items:center;
+	padding: 20px 0px;
+	margin-bottom: 20px;
+}
+.mypage-container-list{
+	padding : 5px;
+}
+.mypage-container-list-item{
+	border: 1px solid var(--main-color-grey);
+	border-radius:10px;
+	display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    background: white;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.list-item-category{
+	width: 10%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+}
+.list-item-content-li{
+	padding-right: 20px;
+	margin-top: 5px;
+}
+.list-item-content{
+	width:40%;
+}
+.list-item-content .content-date{
+	font-size: 17px;
+	font-weight:400;
+	color: var(--main-color-pink);
+}
+.list-item-content .content-local{
+	font-size: 13px;
+    color: #7a7a7a;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.list-item-applyMember{
+	width: 15%;
+	display: inline-flex;
+	flex-direction: column;
+}
+.list-item-button{
+	width: 10%;
+}
+
+.list-item-button .button-viewApplyMatch{
+	width: 100%;
+	border:1px solid var(--main-color-pink);
+	font-size : 17px;
+	background: #EF3B36;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #FFFFFF, #E26A71);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #FFFFFF, #E26A71); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.mypage-container-boarder{
+	display: flex;
+	justify-content: center;
+	
+}
+
+@keyframes progress-bar-stripes {
+  from { background-position: $progress-height 0; }
+  to { background-position: 0 0; }
+}
+
+.progress {
+	width:30%;
+	margin-right: 15px;
+	display: flex;
+	height: $progress-height;
+	overflow: hidden; // force rounded corners by cropping it
+	font-size: $progress-font-size;
+	background-color: $progress-bg;
+	@include border-radius($progress-border-radius);
+	@include box-shadow($progress-box-shadow);
+}
+
+.progress-bar {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: $progress-bar-color;
+	text-align: center;
+	background-color: #286B7B !important;
+	animation: progressAnimation 6s;
+    transition: 0.3s linear both;
+    transition-property: width, background-color;
+	@include transition($progress-bar-transition);
+}
+
+.progress-bar-striped {
+	@include gradient-striped();
+	background-size: $progress-height $progress-height;
+}
+
+.progress-bar-animated {
+	animation: progress-bar-stripes $progress-bar-animation-timing;
+}

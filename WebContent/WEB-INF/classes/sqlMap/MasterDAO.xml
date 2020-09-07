@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kosmo62.spomatch.master.dao.SpoMasterMapper">
+	<select id="listSpoMember2" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+	
+	
+	
+	<!-- 회원목록 전체 가져오기 -->
+			SELECT * FROM (SELECT
+        				 A.SMB_NO       AS SMB_NO			<!-- 1.		회원 번호 -->
+				        ,A.SMB_MF       AS SMB_MF			<!-- 2.		관리자 여부 -->
+				        ,A.SMB_ID       AS SMB_ID			<!-- 3.		회원 아이디 -->
+				        ,A.SMB_NAME     AS SMB_NAME			<!-- 4.		회원 이름 -->
+				        ,A.SMB_PW       AS SMB_PW			<!-- 5.		회원 패스워드 -->
+				        ,A.SMB_EMAIL    AS SMB_EMAIL		<!-- 6.		회원 이메일 -->
+				        ,A.SMB_ADDRNO   AS SMB_ADDRNO		<!-- 7.		회원 우편번호 -->
+				        ,A.SMB_ADDR     AS SMB_ADDR			<!-- 8.		회원 주소 -->
+				        ,A.SMB_HP       AS SMB_HP			<!-- 9.		회원 핸드폰 번호 -->
+				        ,A.SMB_GENDER   AS SMB_GENDER		<!-- 10. 	회원 성별 -->
+				        ,A.SMB_HEIGHT   AS SMB_HEIGHT		<!-- 11. 	회원 키 -->
+				        ,A.SMB_WEIGHT   AS SMB_WEIGHT		<!-- 12.	회원 체중 -->
+				        ,A.SMB_G_WEIGHT AS SMB_G_WEIGHT		<!-- 13.	회원 목표 체중 -->
+				        ,A.SMB_ACTIVITY AS SMB_ACTIVITY		<!-- 14.	회원 활동지수 -->
+				        ,A.SMB_DELETEYN AS SMB_DELETEYN		<!-- 15.	회원 취소여부 -->
+				        ,TO_CHAR(A.SMB_INSERTDATE, 'YYYY-MM-DD') AS SMB_INSERTDATE	<!-- 16.	회원 가입일자 -->
+				        ,TO_CHAR(A.SMB_UPDATEDATE, 'YYYY-MM-DD') AS SMB_UPDATEDATE	<!-- 17.	회원 수정일자 -->
+				        ,CEIL(ROW_NUMBER() OVER(ORDER BY A.SMB_NO)/B.SPG_PAGESIZE)SPG_CURPAGE,
+				        COUNT(A.SMB_NO)OVER()AS SPG_TOTALSIZE,
+				        B.SPG_PAGESIZE AS SPG_PAGESIZE,
+				        B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			 FROM 
+   				 		SPOMATCH_MEMBER A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='05') B
+   				 <where>
+   				 		A.SMB_DELETEYN = 'Y'
+   				 		<if test="searchFilter=='이름'">
+						<![CDATA[AND A.SMB_NAME LIKE '%'||#{keyword}||'%']]>
+						</if>
+						<if test="searchFilter=='아이디'">
+						<![CDATA[AND A.SMB_ID LIKE '%'||#{keyword}||'%']]>
+						</if>
+				 </where>
+   				 		ORDER BY 1 DESC
+   				 		)
+   				 		WHERE SPG_CURPAGE=#{spg_curPage}
+   			</select>
+		
+		
+		
+		<!-- 회원목록 디테일 가져오기 -->
+		<select id="selectSpoMember2" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+			SELECT
+        				 A.SMB_NO       AS SMB_NO			
+				        ,A.SMB_MF       AS SMB_MF	
+				        ,A.SMB_ID       AS SMB_ID
+				        ,A.SMB_NAME     AS SMB_NAME			
+				        ,A.SMB_PW       AS SMB_PW	
+				        ,A.SMB_EMAIL    AS SMB_EMAIL		
+				        ,A.SMB_ADDRNO   AS SMB_ADDRNO		
+				        ,A.SMB_ADDR     AS SMB_ADDR			
+				        ,A.SMB_HP       AS SMB_HP		
+				        ,A.SMB_GENDER   AS SMB_GENDER		
+				        ,A.SMB_HEIGHT   AS SMB_HEIGHT		
+				        ,A.SMB_WEIGHT   AS SMB_WEIGHT	
+				        ,A.SMB_G_WEIGHT AS SMB_G_WEIGHT	
+				        ,A.SMB_ACTIVITY AS SMB_ACTIVITY	
+				        ,A.SMB_DELETEYN AS SMB_DELETEYN	
+				        ,TO_CHAR(A.SMB_INSERTDATE, 'YYYY-MM-DD') AS SMB_INSERTDATE	
+				        ,TO_CHAR(A.SMB_UPDATEDATE, 'YYYY-MM-DD') AS SMB_UPDATEDATE
+				FROM 
+						SPOMATCH_MEMBER A
+				WHERE
+						A.SMB_NO = #{smb_no}
+				AND 
+						A.SMB_DELETEYN = 'Y'
+	</select>
+	
+	
+	
+	<!-- 선택한 날짜의 매칭건 가져오기-->
+	<select id="getMatchCountAll" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+			SELECT AA.SMC_DATE, COUNT(SMT.SMC_INSERTDATE) AS SMC_COUNT
+			FROM 
+			(
+			    SELECT TO_CHAR(TO_DATE(#{startDate,jdbcType=VARCHAR}, 'YYYYMMDD')+LEVEL-1, 'YYYY-MM-DD') AS SMC_DATE
+			    FROM DUAL
+			    CONNECT BY LEVEL <![CDATA[<= ( TO_DATE(#{endDate,jdbcType=VARCHAR}, 'YYYYMMDD') - TO_DATE(#{startDate,jdbcType=VARCHAR}, 'YYYYMMDD') + 1 )]]>
+			) AA
+			LEFT JOIN SPOMATCH_MATCH SMT ON TO_DATE(AA.SMC_DATE) = TO_DATE(SMT.SMC_INSERTDATE)
+			GROUP BY AA.SMC_DATE
+			ORDER BY TO_DATE(AA.SMC_DATE) ASC
+	</select>
+	
+	<!-- 선택한 날짜의 회원가입건 가져오기-->
+	<select id="getNewMemberCountAll" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+			SELECT AA.SMB_DATE, COUNT(SMT.SMB_INSERTDATE) AS SMB_COUNT
+			FROM 
+			(
+			    SELECT TO_CHAR(TO_DATE(#{startDate,jdbcType=VARCHAR}, 'YYYYMMDD')+LEVEL-1, 'YYYY-MM-DD') AS SMB_DATE
+			    FROM DUAL
+			    CONNECT BY LEVEL <![CDATA[<= ( TO_DATE(#{endDate,jdbcType=VARCHAR}, 'YYYYMMDD') - TO_DATE(#{startDate,jdbcType=VARCHAR}, 'YYYYMMDD') + 1 )]]>
+			) AA
+			LEFT JOIN SPOMATCH_MEMBER SMT ON TO_DATE(AA.SMB_DATE) = TO_DATE(SMT.SMB_INSERTDATE)
+			GROUP BY AA.SMB_DATE
+			ORDER BY TO_DATE(AA.SMB_DATE) ASC
+	</select>
+	
+	
+	
+	<!-- 하루 매칭건 가져오기 -->
+	<select id="getMatchCountToday" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+			SELECT
+			    AA.TODAY,COUNT(SMT.SMC_INSERTDATE) AS SMC_COUNT
+			FROM
+			    (SELECT SYSDATE AS TODAY FROM DUAL)AA
+			    LEFT JOIN SPOMATCH_MATCH SMT ON TO_DATE(AA.TODAY)=TO_DATE(SMT.SMC_INSERTDATE)
+			GROUP BY AA.TODAY
+			ORDER BY TO_DATE(AA.TODAY) ASC
+	</select>
+	
+	
+	
+	<!-- 하루 회원가입 건 가져오기 -->
+	<select id="getNewMemberToday" parameterType="SpoMasterVO" resultType="SpoMasterVO">
+			SELECT
+			    AA.TODAY,COUNT(SMT.SMB_INSERTDATE) AS SMB_COUNT
+			FROM
+			    (SELECT SYSDATE AS TODAY FROM DUAL)AA
+			    LEFT JOIN SPOMATCH_MEMBER SMT ON TO_DATE(AA.TODAY)=TO_DATE(SMT.SMB_INSERTDATE)
+			GROUP BY AA.TODAY
+			ORDER BY TO_DATE(AA.TODAY) ASC
+	</select>
+
+
+
+</mapper>

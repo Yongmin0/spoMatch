@@ -1,0 +1,112 @@
+@charset "UTF-8";
+body{
+	padding: 0px;
+	margin: 0px;
+}
+#replyList_ul tr td div
+{
+	margin: 20px 0px;
+	width: 95%;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+
+#replyList_ul tr td div p textarea
+{
+	width: 100%;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 7rem;
+    
+}
+
+#replyList_ul tr td div p .counterUp
+{
+	background:rgba(255,0,0,0.5);
+	border-radius: 0.5em;
+	padding: 0 .5em 0 .5em;
+	font-size: 0.75em;	
+}
+
+.bytes-wrapper
+{
+    width: 98%;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+.bytes-wrapper textarea
+{
+	width: 100%;
+	height: 7em;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 9em;
+    border: 1px solid rgb(179, 179, 179);
+    padding: 10px;
+}
+.bytes-wrapper span
+{
+	position: absolute;
+    bottom: 55px;
+    right: 0px;
+}
+
+.counter
+{
+	background:rgba(255,0,0,0.5);
+	border-radius: 0.5em;
+	padding: 0 .5em 0 .5em;
+	font-size: 0.75em;
+}
+
+section .container .table_wrap
+{
+	padding-bottom: 44px;
+}
+section .container .table_wrap .reply_content
+{
+	padding: 5px;
+}
+/*댓글 정보들 글자강조*/
+section .container .table_wrap .marT5 span
+{
+	font-weight: 600;
+}
+
+/*삭제 여부*/
+section .container .table_wrap .marL6
+{
+	display: none;
+}
+section .container .table_wrap .reply_list_wrap #replyList_ul tr td div p text
+{
+	display: none;
+}
+section .container .table_wrap .marT5 span
+{
+	margin-top: 0px;
+	margin-right: 10px;
+	text-align: left;
+	font-size: 14px;
+}
+/*댓글 삭제, 수정 버튼 설정*/
+section .container .table_wrap .marT5 input[type=button]
+{
+	margin: 5px 5px;
+	border-style: none;
+	background-color: #0043F8;
+	color: var(--white);
+	border-radius: 3px;
+	font-weight: 700;
+	font-size: 14px;
+	padding: 5px;
+	float: right;
+}
+section .container .table_wrap .marT5 .bytes-wrapper .blue_btn
+{
+	margin-top: 10px;
+}

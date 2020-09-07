@@ -1,0 +1,351 @@
+@charset "UTF-8";
+
+/*제목부분*/
+section .container h1
+{
+  font-size: 28px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid black;
+}
+
+section .container .row
+{
+  display: block;
+}
+
+/*날짜검색 부분*/
+section .container .date
+{
+  display: flex;
+  margin: 20px 0;
+}
+section .container .date form input
+{
+  font-family: var(--font-family-noto);
+  font-size: 15px;
+  border-style: none;
+  height: 40px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+/*날짜 검색 부분*/
+section .container .date form input[type=text] 
+{
+  width: 230px;
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+/*날짜 검색 버튼부분*/
+section .container .date form input[type=button]
+{
+  width: 50px;
+  border-radius: 4px;
+  font-weight: 600;
+  background-color: #E67F85;
+  color: var(--white);
+}
+
+@charset "UTF-8";
+
+section{
+  background-color: var(--light);
+  padding-top: 120px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 50px;
+  font-family: var(--font-family-noto);
+}
+/*제목부분*/
+section .container h1
+{
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid black;
+}
+section .container  h2
+{
+    font-weight: 500;
+    margin-bottom: 55px;
+}
+/*Menu부분부타*/
+section .container  .dietInsertForm_diet_nutrient
+{
+	display: block;
+}
+section .container  .dietInsertForm_diet_nutrient #diet
+{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+    margin-bottom: 55px;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_subject,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_subject
+{
+    font-size: 25px;
+    font-family: var(--font-family-sans-serif);
+    font-weight: 500;
+    background-color: var(--main);
+    color: var(--white);
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal
+{
+    background-color: #F4F6F9;
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 15px;
+    width: 68%;
+    justify-content: space-around;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .subject
+{
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 5px;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal input[type=text]
+{
+    text-align: center;
+    width: 230px;
+    height: 40px;
+    border: 1px solid #dddddd;
+    font-size: 13px;
+    padding: 5px;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_breakfast, 
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_lunch, 
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_dinner
+{
+    padding: 0px 25px;
+}
+/*식단 리스트 부분*/
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_breakfast #breakfast_list,
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_lunch #lunch_list,
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal .diet_dinner #dinner_list
+{
+	display: block;
+    text-align: center;
+    list-style: none;
+    padding-inline-start: 0px;
+}
+section .container  .dietInsertForm_diet_nutrient #diet .diet_meal div ul li
+{
+	font-size: 14px;
+	font-family: var(--font-family-noto);
+	margin: 10px 0px;
+}
+
+
+/*영양소 출력 부분*/
+section .container  .dietInsertForm_diet_nutrient #nutrient
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 55px;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content
+{
+    font-family: var(--font-family-noto);
+    font-size: 15px;
+    text-align: center;
+    display: block;
+    justify-content: left;
+    background-color: #F4F6F9;
+    padding: 10px 30px;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content input
+{
+    font-size: 14px;
+    font-weight: 400;
+    width: 100px;
+    height: 35px;
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #dddddd;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content div div p
+{
+    font-family: var(--font-family-noto);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 5px;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_kcal,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_mainnutrie,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_subnutrie
+{
+    justify-content: left;
+    display: flex;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_kcal div,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_mainnutrie div,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_subnutrie div
+{
+    display: block;
+    padding: 5px 25px;
+}
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_kcal div span,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_mainnutrie div span,
+section .container  .dietInsertForm_diet_nutrient #nutrient .nutrient_content .nutrient_subnutrie div span
+{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/*입력버튼*/
+section .container  .dietInsertForm_btn
+{
+    justify-items: center;
+    padding: 30px 20px;
+    margin : 50px 30px;
+}
+section .container  .dietInsertForm_btn input
+{
+    display : block;
+    margin: 0 auto;
+    justify-content: center;
+    width: 180px;
+    height: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    font-family: var(--font-family-noto);
+    color: var(--white);
+    background-color: #E67F85;
+    border-style: none;
+    border-radius: 3px;
+
+}
+
+#portfolio .container-fluid, #portfolio .container-sm, #portfolio .container-md, #portfolio .container-lg, #portfolio .container-xl {
+  max-width: 1920px;
+}
+#portfolio .container-fluid .portfolio-box, #portfolio .container-sm .portfolio-box, #portfolio .container-md .portfolio-box, #portfolio .container-lg .portfolio-box, #portfolio .container-xl .portfolio-box {
+  position: relative;
+  display: block;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption, #portfolio .container-sm .portfolio-box .portfolio-box-caption, #portfolio .container-md .portfolio-box .portfolio-box-caption, #portfolio .container-lg .portfolio-box .portfolio-box-caption, #portfolio .container-xl .portfolio-box .portfolio-box-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  opacity: 0;
+  color: #fff;
+  background: rgba(244, 98, 58, 0.9);
+  transition: opacity 0.25s ease;
+  text-align: center;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-sm .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-md .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-lg .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-xl .portfolio-box .portfolio-box-caption .project-category {
+  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-sm .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-md .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-lg .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-xl .portfolio-box .portfolio-box-caption .project-name {
+  font-size: 1.2rem;
+}
+#portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption {
+  opacity: 1;
+}
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/**********************그래프*********************/
+section .graph
+{
+	display: flex;
+	justify-content: space-around;
+  margin-top: 100px;
+}
+
+section .graph canvas
+{
+  padding: 0;
+  margin: auto;
+  display: block;
+}
+
+/*************************데이터없을때***************************/
+section div #noDataForm
+{
+	padding-bottom: 200px;
+}
+/**/
+section div #noDataForm .content_text
+{
+	font-size: 45px;
+	text-align: center;
+	padding: 121px 0px;
+}
+section div #noDataForm #insertB
+{
+	display : block;
+	margin : 0 auto;
+	padding: 5px 15px;
+	font-size: 28px;
+	font-weight: 500;
+	background-color: #E67F85;
+	color: white;
+	font-family: var(--font-familt-noto);
+	border-radius: 10px;
+	border-style: none;
+}
+
+#portfolio .container-fluid, #portfolio .container-sm, #portfolio .container-md, #portfolio .container-lg, #portfolio .container-xl {
+  max-width: 1920px;
+}
+#portfolio .container-fluid .portfolio-box, #portfolio .container-sm .portfolio-box, #portfolio .container-md .portfolio-box, #portfolio .container-lg .portfolio-box, #portfolio .container-xl .portfolio-box {
+  position: relative;
+  display: block;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption, #portfolio .container-sm .portfolio-box .portfolio-box-caption, #portfolio .container-md .portfolio-box .portfolio-box-caption, #portfolio .container-lg .portfolio-box .portfolio-box-caption, #portfolio .container-xl .portfolio-box .portfolio-box-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  opacity: 0;
+  color: #fff;
+  background: rgba(244, 98, 58, 0.9);
+  transition: opacity 0.25s ease;
+  text-align: center;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-sm .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-md .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-lg .portfolio-box .portfolio-box-caption .project-category, #portfolio .container-xl .portfolio-box .portfolio-box-caption .project-category {
+  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-sm .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-md .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-lg .portfolio-box .portfolio-box-caption .project-name, #portfolio .container-xl .portfolio-box .portfolio-box-caption .project-name {
+  font-size: 1.2rem;
+}
+#portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption {
+  opacity: 1;
+}
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.75);
+}

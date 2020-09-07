@@ -1,0 +1,264 @@
+@charset "UTF-8";
+/*======================================================================================================================================*/
+/*마이페이지 HOME버튼 부분*/
+section .container .mypage_home
+{
+    width: 100%;
+    margin-bottom: 20px;
+}
+section .container .mypage_home a
+{
+    display: flex;
+    justify-content: flex-end;
+}
+/*마이페이지 HOME버튼 글씨*/
+section .container .mypage_home a .home_text
+{
+    color: var(--gray-dark);
+    font-weight: 700;
+    line-height: 1.2;
+}
+/*마이페이지 HOME버튼 IMG 아이콘*/
+section .container .mypage_home a img
+{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+/*마이페이지 side menu + content 부분*/
+section .container .mypage_content
+{
+    display: flex;
+    padding-top: 17px;
+    padding-right: 17px;
+    padding-bottom: 17px;
+    padding-left: 80px;
+
+
+}
+/*마이페이지 side menu부분*/
+section .container .mypage_content .mypage_side
+{
+    position: absolute;
+    width: 260px;
+    height: 100%;
+    left: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+section .container .mypage_content .mypage_side img
+{
+    width: 25px;
+}
+/*마이페이지 side menu 각 부분*/
+section .container .mypage_content .mypage_side .icon
+{
+    border-top: 1px solid #cecdce;
+    padding-top: 14px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+}
+/*사이드 메뉴의 메인 글자*/
+section .container .mypage_content .mypage_side .icon_subject
+{
+    width: 200px;
+    height: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 3px;
+    cursor: pointer;
+    color: var(--gray-dark);
+}
+section .container .mypage_content .mypage_side .icon_subject span
+{
+    font-size: 17px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+section .container .mypage_content .mypage_side .icon ul
+{
+    list-style: none;
+    padding-inline-start: 15px;
+}
+section .container .mypage_content .mypage_side .icon a
+{
+    text-decoration: none;
+    color: var(--gray);
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 5px;
+}
+section .container .mypage_content .mypage_side .icon ul li:hover a
+{
+    background-color: #9CB8D6;
+    color: var(--white);
+}
+section .container .mypage_content .mypage_side .icon a,ul li
+{
+    padding: 10px 5px;
+}
+/*======================================================================================================================================*/
+*{
+	margin: 0;
+	padding: 0;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+section .container #detailboard
+{
+    padding-bottom: 50px;
+}
+section .container #buttonform
+{
+	margin-bottom: 0px;
+}
+#selectForm{
+	margin-block-end: 0;
+}
+
+/***********************************신청, 수정, 삭제, 목록 버튼****************************/
+
+
+.detailboard_btn {
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgb(179, 179, 179);
+    text-align: right;
+}
+
+
+
+/*카테고리, 작성자, 작성일, 조회수 부분*/
+.detailboard_info{
+	display: flex;
+    justify-content: left;
+    background-color: #F4F6F9;
+    padding: 10px;
+}
+.detailboard_info .detailboard_author, .detailboard_info .detailboard_insertDate{
+	display: flex;
+    margin-right: 10px;
+}
+.detailboard_author p, .detailboard_insertDate p {
+    margin-right: 8px;
+}
+.detailboard_author div{
+  	width: 70px;
+}
+
+/*제목*/
+section .container #detailboard .detailboard_content .detailboard_subject
+{
+    text-align: left;
+    font-family: var(--font-family-noto);
+    font-size: 2.1rem;
+    font-weight: 500;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+/*내용*/
+.matchTime p {
+    font-size: 26px;
+    font-weight: 400;
+}
+.matchSubject h1{
+    color: #3534A5;
+    font-size: 32px;
+    font-weight: 700;
+}
+.matchLocal span{
+	font-size: 16px;
+}
+.matchLocal{
+	margin-bottom: 10px;
+}
+.ApplyAndMax{
+	display: inline-flex;
+    margin-top: 10px;
+}
+.maxApply span, .matchApply span, .matchWait span{
+	font-size: 12px;
+    color: #999;
+}
+.maxApply p, .matchApply p, .matchWait p{
+	color: #3534A5;
+    font-size: 22px;
+    font-weight: 700;
+}
+.matchArea {
+	padding: 50px 0;
+    margin: 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+.ApplyAndMax{
+	display: inline-flex;
+    margin-top: 10px;
+    width: 15%;
+}
+.matchContent{
+	padding: 50px 0;
+    margin: 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+.matchContent_sub{
+	margin-bottom: 10px;
+}
+.d-block{
+	display: block !important;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+.btn-primary {
+  color: #ffffff;
+  background-color: #1b68ff;
+  border-color: #1b68ff; }
+  .btn-primary:hover {
+    color: #ffffff;
+    background-color: #0052f4;
+    border-color: #004ee7; }
+  .btn-primary:focus, .btn-primary.focus {
+    color: #ffffff;
+    background-color: #0052f4;
+    border-color: #004ee7;
+    box-shadow: 0 0 0 0.2rem rgba(61, 127, 255, 0.5); }
+  .btn-primary.disabled, .btn-primary:disabled {
+    color: #ffffff;
+    background-color: #1b68ff;
+    border-color: #1b68ff; }
+  .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+  .show > .btn-primary.dropdown-toggle {
+    color: #ffffff;
+    background-color: #004ee7;
+    border-color: #004ada; }
+    .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-primary.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(61, 127, 255, 0.5); }
+
+.btn-secondary {
+  color: #ffffff;
+  background-color: #6c757d;
+  border-color: #6c757d; }
+  .btn-secondary:hover {
+    color: #ffffff;
+    background-color: #5a6268;
+    border-color: #545b62; }
+  .btn-secondary:focus, .btn-secondary.focus {
+    color: #ffffff;
+    background-color: #5a6268;
+    border-color: #545b62;
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5); }
+  .btn-secondary.disabled, .btn-secondary:disabled {
+    color: #ffffff;
+    background-color: #6c757d;
+    border-color: #6c757d; }
+  .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+  .show > .btn-secondary.dropdown-toggle {
+    color: #ffffff;
+    background-color: #545b62;
+    border-color: #4e555b; }
+    .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-secondary.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5); }

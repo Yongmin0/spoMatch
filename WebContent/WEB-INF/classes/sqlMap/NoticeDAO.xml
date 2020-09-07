@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kosmo62.spomatch.notice.dao.SpoNoticeMapper">
+	<resultMap id="SpoNoticeVO" type="kosmo62.spomatch.notice.vo.SpoNoticeVO">
+		<result column="SNT_NO" property="snt_no"/>
+		<result column="SNT_SUBJECT" property="snt_subject"/>
+		<result column="SNT_CONTENT" property="snt_content"/>
+		<result column="SNT_FILE" property="snt_file"/>
+ 		<result column="SNT_DELETEYN" property="snt_deleteyn"/>
+		<result column="SNT_INSERTDATE" property="snt_insertdate"/>
+		<result column="SNT_UPDATEDATE" property="snt_updatedate"/>
+	</resultMap>
+	<!-- 게시물 전체 조회 -->
+	<select id="noticeList" parameterType="SpoNoticeVO" resultType="SpoNoticeVO">
+			SELECT * FROM(SELECT 
+					A.SNT_NO,
+					A.SNT_SUBJECT,
+					A.SNT_CONTENT,
+					A.SNT_FILE,
+					A.SNT_VIEWCOUNT,
+					A.SNT_DELETEYN,
+					TO_CHAR(A.SNT_UPDATEDATE,'YYYY-MM-DD')  AS SNT_UPDATEDATE,
+					TO_CHAR(A.SNT_INSERTDATE,'YYYY-MM-DD')  AS SNT_INSERTDATE,
+					CEIL(ROW_NUMBER() OVER(ORDER BY A.SNT_NO) / B.SPG_PAGESIZE) SPG_CURPAGE,
+					COUNT(A.SNT_NO) OVER() AS SPG_TOTALSIZE,
+					B.SPG_PAGESIZE AS SPG_PAGESIZE,
+					B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			FROM SPOMATCH_NOTICE A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='05') B
+			<where>
+				A.SNT_DELETEYN = 'Y'
+				<if test="searchFilter=='제목'">
+					<![CDATA[AND A.SNT_SUBJECT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="searchFilter=='내용'">
+					<![CDATA[AND A.SNT_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="searchFilter=='제목+내용'">
+				<![CDATA[AND A.SNT_SUBJECT LIKE '%'||#{keyword}||'%']]>
+				<![CDATA[OR A.SNT_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="snt_content != null and snt_content !=''">
+					AND A.SNT_CONTENT = #{snt_content}
+				</if>
+			</where>
+			ORDER BY 1 DESC
+			)
+			WHERE SPG_CURPAGE =#{spg_curPage}
+	</select>
+	
+	<!-- 글 쓰기 -->
+	<insert id="noticeInsert" parameterType="SpoNoticeVO">
+		<selectKey keyProperty="snt_no" resultType="String" order="BEFORE">
+			SELECT 'NT'||LPAD((
+			SELECT /*+ INDEX_DESC(NOTICE_NO_PK) */        
+			NVL(MAX(SUBSTR(SNT_NO,-4)),0)+1 COMMNO  
+			  FROM SPOMATCH_NOTICE A 
+			  ),4,'0') FROM DUAL
+		</selectKey>
+		insert into spomatch_notice
+		(snt_no,
+		snt_subject,
+		snt_content,
+		snt_file,
+		snt_viewcount,
+		snt_deleteyn,
+		snt_updatedate,
+		snt_insertdate
+		)
+		values
+		(#{snt_no},
+		#{snt_subject},
+		#{snt_content},
+		#{snt_file},
+		0,
+		'Y',
+		SYSDATE,
+		SYSDATE
+		)
+	</insert>
+	<!-- 글 상세 정보 -->
+	<select id="noticeListDetail" resultMap="SpoNoticeVO" parameterType="kosmo62.spomatch.notice.vo.SpoNoticeVO">
+		select 
+					snt_no as snt_no,
+					snt_subject as snt_subject,
+					snt_content as snt_content,
+					snt_file as snt_file,
+					snt_viewcount as snt_viewcount,
+					snt_deleteyn as snt_deleteyn,
+					to_char(snt_updatedate,'YYYY-MM-DD')  as snt_updatedate,
+					to_char(snt_insertdate,'YYYY-MM-DD')  as snt_insertdate
+			from spomatch_notice
+			where snt_no = #{snt_no}
+	</select>
+	
+	<update id="noticeUpdate" parameterType="SpoNoticeVO">
+		update 
+			spomatch_notice
+		set 
+				snt_subject = #{snt_subject},
+			   snt_content = #{snt_content},
+			   snt_file = #{snt_file},
+			   snt_updatedate = SYSDATE
+		where 
+			snt_no = #{snt_no}
+	</update>
+	<update id="noticeDelete" parameterType="SpoNoticeVO">
+		update
+			spomatch_notice
+		set
+			snt_deleteyn = 'N'
+		where
+			snt_no = #{snt_no}
+	</update>
+	<!-- 게시글 조회수  -->
+	<update id="noticeViewCount" parameterType="SpoNoticeVO">
+		UPDATE SPOMATCH_NOTICE A
+		SET A.SNT_VIEWCOUNT = A.SNT_VIEWCOUNT + 1
+			  ,A.SNT_UPDATEDATE = SYSDATE
+		WHERE A.SNT_NO = #{snt_no}
+	</update>
+</mapper>
+		

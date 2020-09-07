@@ -1,0 +1,285 @@
+@charset "UTF-8";
+
+:root {
+  --main-color-pink: #E26A71;
+  --main-color-green: #71A8AB;
+  --main-color-grey: #B2B3B6;
+}
+ol, ul {
+	list-style: none;
+}
+a{
+	cursor: pointer;
+}
+h3{
+	font-size:1.5rem;
+	padding: 5px 10px; 
+	border-radius: 6px;
+}
+h4{
+	font-size:1.25rem;
+	padding: 0px 10px; 
+}
+
+select {
+	background-size: 1.25rem;
+	background-repeat: no-repeat;
+	background-position: calc(100% - 1rem) center;
+	height: 2.5rem;
+	padding-right: 2.5rem;
+	text-overflow: ellipsis;
+}
+select option {
+	color: rgba(255, 255, 255, 0.875);
+	background:var(--main-color-pink);
+}
+
+select:focus::-ms-value {
+	background-color: transparent;
+}
+
+/* ============ listMatch 페이지 css ===============  */
+#searchForm {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+ }
+ /* 날짜 선택 버튼 */
+ .listMachTitle{
+	/*background: rgba(113,171,169,0.45); */
+	border-bottom: 2px solid f56a6a;
+}
+ /* 날짜 선택 버튼 */
+ .select_box1_1{
+	background: #fff;
+	height: 120px;
+	width:100%;
+}
+.select_box1_1-bt{
+	max-width: 1024px;
+    margin: 0 auto;
+	color: #000;
+}
+
+.select_box1_1-bt div div{
+	padding: 5px 5px;
+	align: center;
+    border-radius: 20px;
+}
+.select_box1_1-bt div div .isactive{
+	background: #548BA1;
+	color:white;
+}
+.select_box1_1-bt .select_box1_1-Date div p{
+	font-family: 'Apple SD Gothic Neo','Noto Sans CJK KR', 'Malgun Gothic', 'dotum', 'gulim',sans-serif;
+	font-size: 20px;
+    line-height: 15px;
+    padding-top: 8px;
+    font-weight: 400;
+}
+.select_box1_1-bt .select_box1_1-Date div span{
+	font-family: 'Apple SD Gothic Neo','Noto Sans CJK KR', 'Malgun Gothic', 'dotum', 'gulim',sans-serif;
+	font-size: 16px;
+}
+.Date0{
+	color: #ff2c45;
+}
+.Date6{
+	color: #335ABF;
+}
+
+/* 지역 검색 버튼 */
+.select_box1_2{
+	padding: 20px 0px;
+	display: flex;
+	justify-content: flex-start;
+}
+.select_box1_2 li a{
+	padding: 5px 10px;
+	align: center;
+    border-radius: 20px;
+    
+}
+.select_box1_2 li .isactive{
+	background: rgba(234, 123, 130,0.75);
+}
+ 
+ /* 종목, 제목 검색 버튼 */
+.select_box2{
+	padding: 20px 0px;
+	display: flex;
+	justify-content: space-between;
+}
+.matchList_table{
+	width: 100%;
+}
+
+.matchList_table th{
+	background-image: linear-gradient(to top, var(--main-color-pink) 20%, #ffc4cb 100%);
+	height: 40px;
+	color: #fff;
+	text-align: center;
+}
+.matchList_table td{
+	background : rgba(252, 252, 252,0.9);
+}
+.matchList_table tr{
+	border: 2px;
+	border-color: #D8D9DA;
+	border-style: solid;
+	padding: 20px;
+	height: 40px;
+	margin: auto 0px;
+}
+
+
+@media only screen and (min-width: 1024px)
+.select_box1_1-bt {
+    padding: 20px 0;
+}
+
+
+/* ============ updateMatch 페이지 css ===============  */
+.updateForm_table td{
+	padding: 10px;
+}
+
+/* ============ viewMatch 페이지 css ===============  */
+/****************************************게시판 부분***************************************************/
+/*****카테고리, 제목(+작성자), 검색부분*****/
+form,
+form input
+{
+    font-family: var(--font-family-noto);
+    font-size: 14px;
+}
+
+form .sub
+{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 35px;
+}
+form .sub .sub_category_subject
+{
+    display: flex;
+}
+form .sub .sub_category_subject .sub_category
+{
+    margin-right: 10px;
+}
+form .sub .sub_search input[type=text]
+{
+    width: 230px;
+    height: 33px;
+    vertical-align: middle;
+    border-style: none;
+}
+form .sub .sub_search input[type=button]
+{
+    width: 60px;
+    height: 27px;
+    vertical-align: middle;
+    padding: 3px 0px;
+    border-style: none;
+    border-radius: 3px;
+}
+
+.sub_total_insertbtn
+{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+form .sub_insertbtn
+{
+    width: 70px;
+    height: 30px;
+    border-style: none;
+    border-radius: 5px
+}
+
+/*****게시판 부분*****/
+section .board
+{
+    width: 100%;
+    height: auto;
+    padding-bottom: 214px;
+}
+/*게시판 info*/
+section .board .board_info
+{
+    font-family: var(--font-family-noto);
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+}
+section .board .info
+{
+    border-top: 1px solid rgb(163, 163, 163);
+    border-bottom: 1px solid rgb(163, 163, 163);
+    padding: 13px 0px;
+    background-color: #F4F6F9;
+}
+/*게시판 content*/
+section .board .board_content
+{
+    font-family: var(--font-family-noto);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    background-color: var(--white);
+    border-bottom: 1px solid #E3E3E4;
+}
+section .board .board_content:hover
+{
+	background-color: #E0EAF9;
+	color: var(--gray);
+}
+section .board .content
+{
+    padding: 10px 0px;
+    align-self: center;
+}
+section .board .content_subject
+{
+	cursor: pointer;
+}
+section .board .content_subject:hover
+{
+	text-decoration: underline;
+}
+section .board_nondate
+{
+    font-size: 20px;
+    font-family: var(--font-family-noto);
+    font-weight: 600;
+    text-align: center;
+}
+.viewMatchBtn{
+	border-style:none;
+	width: 90%;
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: white;
+    background-color: #3534A5;
+}
+.finishBtn{
+	border-style:none;
+	width: 90%;
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #999;
+    background-color: #ddd;
+}
+

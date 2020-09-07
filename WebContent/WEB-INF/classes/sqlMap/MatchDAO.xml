@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kosmo62.spomatch.match.dao.SpoMatchMapper">
+	<!--- ====================  게시물 전체 조회 ==================== -->
+	<select id="listMatch" parameterType="SpoMatchVO" resultType="SpoMatchVO">
+		SELECT * FROM(
+			SELECT
+			    A.SMC_NO AS SMC_NO,
+			    A.SMC_LOCAL AS SMC_LOCAL,
+			    (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SMC_LOCAL) AS SMC_LOCALVAL,
+			    A.SMC_CATEGORY AS SMC_CATEGORY,
+		    	(SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='SPO' AND SCD_ID= SMC_CATEGORY) AS SMC_CATEGORYVAL,
+			    TO_CHAR(A.SMC_DATE,'MM-DD') AS SMC_DATE,
+			    A.SMC_STTIME AS SMC_STTIME,
+			    A.SMC_ENDTIME AS SMC_ENDTIME,
+			    A.SMC_SUBJECT AS SMC_SUBJECT,
+			    A.SMC_APPLY AS SMC_APPLY,
+			    A.SMC_MAXAPL AS SMC_MAXAPL,
+			    A.SMC_DELETEYN AS SMC_DELETEYN,
+			    TO_CHAR(A.SMC_INSERTDATE,'YYYY-MM-DD') AS SMC_INSERTDATE, 
+			    TO_CHAR(A.SMC_UPDATEDATE,'YYYY-MM-DD') AS SMC_UPDATEDATE,
+			    CEIL(ROW_NUMBER() OVER(ORDER BY A.SMC_NO DESC) / B.SPG_PAGESIZE) SPG_CURPAGE,
+			    COUNT(A.SMC_NO) OVER() AS SPG_TOTALSIZE,
+			    B.SPG_PAGESIZE AS SPG_PAGESIZE,
+			    B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			FROM SPOMATCH_MATCH A, SPOMATCH_PAGING B
+			WHERE B.SPG_TABLENO = '02'
+			AND SMC_DELETEYN = 'Y'
+			<if test="smc_category != null and smc_category !=''">
+				AND SMC_CATEGORY = #{smc_category}
+			</if>
+			<if test="smc_local != null and smc_local !=''">
+				AND SMC_LOCAL = #{smc_local}
+			</if>
+			<if test="smc_subject != null and smc_subject !=''">
+				AND SMC_SUBJECT LIKE '%' || #{smc_subject} || '%'
+			</if>
+			<if test="smc_date != null and smc_date !=''">
+				AND SMC_DATE = TO_DATE( #{smc_date} , 'yy-MM-dd')
+			</if>
+			ORDER BY 1 DESC)
+		WHERE SPG_CURPAGE = #{spg_curPage}
+	</select>
+	
+	<!-- ==================== 마이페이지 내가 등록한 게시물 조회  ==================== -->
+	<select id="mypageListMatch" parameterType="SpoMatchVO" resultType="SpoMatchVO">
+		SELECT * FROM(
+			SELECT
+		            A.SMC_NO AS SMC_NO,
+		            A.SMC_LOCAL AS SMC_LOCAL,
+		            (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SMC_LOCAL) AS SMC_LOCALVAL,
+		            A.SMC_CATEGORY AS SMC_CATEGORY,
+		            (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='SPO' AND SCD_ID= SMC_CATEGORY) AS SMC_CATEGORYVAL,
+		            TO_CHAR(A.SMC_DATE,'YYYY-MM-DD (day)') AS SMC_DATE,
+		            A.SMC_STTIME AS SMC_STTIME,
+		            A.SMC_ENDTIME AS SMC_ENDTIME,
+		            A.SMC_SUBJECT AS SMC_SUBJECT,
+		            A.SMC_APPLY AS SMC_APPLY,
+		            A.SMC_MAXAPL AS SMC_MAXAPL,
+		            (SELECT COUNT(A.SMC_NO) FROM SPOMATCH_APPLY B WHERE A.SMC_NO = B.SMC_NO AND B.SAP_ACCEPTYN = 'W' AND B.SAP_DELETEYN = 'Y') SMC_WAIT,
+		            A.SMC_DELETEYN AS SMC_DELETEYN,
+		            TO_CHAR(A.SMC_INSERTDATE,'YYYY-MM-DD') AS SMC_INSERTDATE, 
+		            TO_CHAR(A.SMC_UPDATEDATE,'YYYY-MM-DD') AS SMC_UPDATEDATE,
+		            CEIL(ROW_NUMBER() OVER(ORDER BY A.SMC_NO DESC) / B.SPG_PAGESIZE) SPG_CURPAGE,
+		            COUNT(A.SMC_NO) OVER() AS SPG_TOTALSIZE,
+		            B.SPG_PAGESIZE AS SPG_PAGESIZE,
+		            B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			FROM SPOMATCH_MATCH A, SPOMATCH_PAGING B
+		    WHERE B.SPG_TABLENO = '02'
+		    AND A.SMC_DELETEYN = 'Y'
+		    AND A.SMC_NO IN(SELECT SMC_NO FROM SPOMATCH_MATCH WHERE SMB_NO=#{smb_no})
+		ORDER BY 1 DESC)
+		<if test="spg_curPage">
+		WHERE SPG_CURPAGE = #{spg_curPage}
+		</if>
+	</select>
+	
+	<!-- ==================== 마이페이지 내가 신청한 매칭글 조회 ==================== -->
+	<select id="mypageListApply" parameterType="SpoMatchVO" resultType="SpoMatchVO">
+		SELECT * FROM(
+			SELECT
+		            A.SMC_NO AS SMC_NO,
+		            A.SMC_LOCAL AS SMC_LOCAL,
+		            (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SMC_LOCAL) AS SMC_LOCALVAL,
+		            A.SMC_CATEGORY AS SMC_CATEGORY,
+		            (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='SPO' AND SCD_ID= SMC_CATEGORY) AS SMC_CATEGORYVAL,
+		            TO_CHAR(A.SMC_DATE,'YYYY-MM-DD (day)') AS SMC_DATE,
+		            A.SMC_STTIME AS SMC_STTIME,
+		            A.SMC_ENDTIME AS SMC_ENDTIME,
+		            A.SMC_SUBJECT AS SMC_SUBJECT,
+		            A.SMC_APPLY AS SMC_APPLY,
+		            A.SMC_MAXAPL AS SMC_MAXAPL,
+	                (SELECT COUNT(B.SAP_NO) FROM SPOMATCH_APPLY B WHERE A.SMC_NO = B.SMC_NO AND B.SAP_ACCEPTYN = 'W' AND B.SAP_DELETEYN = 'Y') SMC_WAIT,
+		            A.SMC_DELETEYN AS SMC_DELETEYN,
+		            TO_CHAR(A.SMC_INSERTDATE,'YYYY-MM-DD') AS SMC_INSERTDATE, 
+		            TO_CHAR(A.SMC_UPDATEDATE,'YYYY-MM-DD') AS SMC_UPDATEDATE,
+		            CEIL(ROW_NUMBER() OVER(ORDER BY A.SMC_NO DESC) / B.SPG_PAGESIZE) SPG_CURPAGE,
+		            COUNT(A.SMC_NO) OVER() AS SPG_TOTALSIZE,
+		            B.SPG_PAGESIZE AS SPG_PAGESIZE,
+		            B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			FROM SPOMATCH_MATCH A, SPOMATCH_PAGING B
+		    WHERE B.SPG_TABLENO = '02'
+		    AND A.SMC_NO IN(SELECT SMC_NO FROM SPOMATCH_APPLY WHERE SMB_NO=#{smb_no} AND SAP_DELETEYN = 'Y')
+		ORDER BY 1 DESC)
+		<if test="spg_curPage">
+		WHERE SPG_CURPAGE = #{spg_curPage}
+		</if>
+	</select>
+	
+	<!-- 게시물 선택 조회 -->
+	<select id="viewMatch" parameterType="SpoMatchVO" resultType="SpoMatchVO">
+		SELECT
+		    A.SMC_NO AS SMC_NO,
+		    A.SMC_LOCAL AS SMC_LOCAL,
+		    (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SMC_LOCAL) AS SMC_LOCALVAL,
+		    A.SMC_CATEGORY AS SMC_CATEGORY,
+	    	(SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='SPO' AND SCD_ID= SMC_CATEGORY) AS SMC_CATEGORYVAL,
+		    TO_CHAR(A.SMC_DATE,'YYYY-MM-DD')||' '||TO_CHAR(A.SMC_DATE,'DAY') AS SMC_DATE,
+		    A.SMC_STTIME AS SMC_STTIME,
+		    A.SMC_ENDTIME AS SMC_ENDTIME,
+		    A.SMC_SUBJECT AS SMC_SUBJECT,
+		    (SELECT COUNT(SAP_NO) from SPOMATCH_APPLY WHERE SAP_ACCEPTYN='W' AND SMC_NO=#{smc_no} AND SAP_DELETEYN = 'Y') AS SMC_WAIT,				-- 대기자
+		    A.SMC_APPLY AS SMC_APPLY,
+		    A.SMC_MAXAPL AS SMC_MAXAPL,
+		    A.SMC_CONTENT AS SMC_CONTENT,
+		    A.SMB_NO AS SMB_NO,
+		    (SELECT B.SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO) SMB_ID,
+		    TO_CHAR(A.SMC_INSERTDATE,'YYYY-MM-DD') AS SMC_INSERTDATE
+		FROM SPOMATCH_MATCH A
+		WHERE A.SMC_NO = #{smc_no}
+	</select>
+	
+	<!-- ==================== 게시물 등록 ==================== -->
+	<insert id="insertMatch" parameterType="SpoMatchVO">
+		<selectKey keyProperty="smc_no" resultType="String" order="BEFORE">
+	    	SELECT 'MC'|| LPAD((SELECT /* +INDEX_DESC(A MATCH_NO_PK) */
+			    NVL(MAX(SUBSTR(A.SMC_NO,-5)),0)+1 
+			    FROM SPOMATCH_MATCH A),5,'0')
+			FROM dual
+	    </selectKey>
+		INSERT INTO SPOMATCH_MATCH(
+		    SMC_NO,         -- 1. 글번호
+		    SMC_SUBJECT,    -- 2. 제목
+		    SMC_CATEGORY,   -- 3. 종목
+		    SMC_LOCAL,      -- 4. 지역
+		    SMC_APPLY,      -- 5. 신청한 인원
+		    SMC_MAXAPL,     -- 6. 구하는 인원
+		    SMC_DATE,       -- 7. 날짜
+		    SMC_STTIME,     -- 8. 시작시간
+		    SMC_ENDTIME,    -- 9. 종료시간
+		    SMC_CONTENT,    -- 10. 기타내용
+		    SMC_DELETEYN,   -- 11. 삭제여부
+		    SMC_INSERTDATE, -- 12. 입력일
+		    SMC_UPDATEDATE, -- 13. 수정일
+		    SMB_NO,         -- 14. 등록자
+		    SPG_TABLENO		-- 15. 테이블번호
+		) 
+		VALUES(
+		    #{smc_no},
+		    #{smc_subject},
+		    #{smc_category},
+		    #{smc_local},
+		    '0',
+		    #{smc_maxapl},
+		    TO_DATE( #{smc_date} , 'yy-MM-dd'),
+		    #{smc_sttime},
+		    #{smc_endtime},
+		    #{smc_content},
+		    'Y',
+		    SYSDATE,
+		    SYSDATE,
+		    #{smb_no},
+		    '02'
+		)
+	</insert>
+	
+	<!-- ==================== 게시물 수정 ==================== -->
+	<update id="updateMatch" parameterType="SpoMatchVO">
+		UPDATE SPOMATCH_MATCH A
+		SET A.SMC_UPDATEDATE = SYSDATE,
+		    A.SMC_SUBJECT = #{smc_subject},
+		    A.SMC_CATEGORY = #{smc_category},
+		    A.SMC_LOCAL = #{smc_local},
+		    A.SMC_MAXAPL = #{smc_maxapl},
+		    A.SMC_DATE = #{smc_date},
+		    A.SMC_STTIME = #{smc_sttime},
+		    A.SMC_ENDTIME = #{smc_endtime},
+		    A.SMC_CONTENT = #{smc_content}
+		WHERE A.SMC_NO = #{smc_no}
+	</update>
+	
+	<!-- ==================== 게시물 삭제 조회 ==================== -->
+	<update id="deleteMatch" parameterType="SpoMatchVO">
+		UPDATE SPOMATCH_MATCH A
+		SET A.SMC_UPDATEDATE = SYSDATE,
+		    A.SMC_DELETEYN = 'N'
+		WHERE A.SMC_NO = #{smc_no}
+		AND A.SMB_NO = #{smb_no}
+	</update>
+	<!-- ==================== 신청 수락시 현재 모집된 사람 수로 업데이트 ==================== -->
+	<update id="updateApplyMatch" parameterType="SpoMatchVO">
+		UPDATE SPOMATCH_MATCH A
+		SET A.SMC_APPLY = (SELECT COUNT(A.SMC_NO) FROM SPOMATCH_APPLY B WHERE A.SMC_NO = B.SMC_NO AND B.SAP_ACCEPTYN = 'Y' AND B.SAP_DELETEYN='Y')
+		WHERE A.SMC_NO = #{smc_no}
+	</update>
+
+</mapper>

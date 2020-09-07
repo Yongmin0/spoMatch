@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace = "kosmo62.spomatch.tipboard.dao.SpoTipBoardMapper">
+	<!-- 게시판 조회수증가 -->
+	<update id="viewcntboard" parameterType="SpoTipBoardVO">
+		UPDATE SPOMATCH_TIPBOARD A
+		SET    A.STB_VIEWCNT = A.STB_VIEWCNT + 1 
+		      ,A.STB_UPDATEDATE = SYSDATE
+		WHERE  A.STB_NO = #{stb_no}
+	</update>
+	
+	<!-- =======게시판 글 좋아요구현========= -->
+	
+	<!-- 1. 좋아요 클릭여부 조회 -->
+	<select id="goodYNboard" parameterType="SpoTipBoardVO" resultType="SpoTipBoardVO">
+		SELECT 
+	            SGD_GOODYN 
+		FROM    SPOMATCH_GOOD 
+		WHERE   STB_NO = #{stb_no,jdbcType=VARCHAR}
+		AND     SMB_NO = #{session_no,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 2-1.좋아요 클릭여부  조회 후 0 건이면 insert 하기-->
+	<insert id="insertgoodcnt" parameterType="SpoTipBoardVO">
+		INSERT INTO SPOMATCH_GOOD(
+				SGD_NO                                 -- 좋아요번호(시퀀스)
+			   ,SMB_NO                                 -- 회원번호
+			   ,STB_NO                                 -- 게시판번호
+			   ,SGD_GOODYN                             -- 좋아요여부
+			   ,SGD_UPDATEDATE                         -- 수정일
+		)VALUES(
+		       GOOD_SEQ.NEXTVAL                        -- 좋아요번호(시퀀스)
+			  ,#{session_no,jdbcType=VARCHAR}          -- 회원번호
+			  ,#{stb_no,jdbcType=VARCHAR}              -- 게시판번호
+			  ,'Y'                                     -- 좋아요여부
+			  ,SYSDATE                                 -- 수정일
+		)
+	</insert>
+
+	  
+	<!-- 2-3.좋아요 클릭여부 조회  값이 'Y'일 경우 'N'으로 변경하기 -->
+	<update id="updategoodN" parameterType="SpoTipBoardVO">
+		UPDATE SPOMATCH_GOOD
+		SET    SGD_GOODYN = 'N'
+		      ,SGD_UPDATEDATE = SYSDATE
+		WHERE  STB_NO = #{stb_no,jdbcType=VARCHAR}
+		AND    SMB_NO = #{session_no,jdbcType=VARCHAR}
+		AND    SGD_GOODYN = 'Y'
+	</update>
+	
+	<!-- 내가등록한글 보기 -->
+	<select id="mylistboard" parameterType="SpoTipBoardVO" resultType="SpoTipBoardVO">
+			SELECT LIST.*
+		FROM ( SELECT L.*, ROWNUM AS STB_ROWNUM
+		FROM (  SELECT
+					       A.STB_NO                                                                      AS STB_NO            -- 글번호
+					      ,A.STB_CATEGORY                                                                AS STB_CATEGORY      -- 카테고리
+					      ,A.STB_SUBJECT                                                                 AS STB_SUBJECT       -- 제목
+					      ,A.STB_VIEWCNT                                                                 AS STB_VIEWCNT       -- 조회수
+					      ,A.STB_GOODCNT                                                                 AS STB_GOODCNT       -- 좋아요
+					      ,A.STB_PW                                                                      AS STB_PW            -- 비밀번호
+					      ,A.STB_CONTENT                                                                 AS STB_CONTENT       -- 내용
+					      ,A.STB_FILE                                                                    AS STB_FILE          -- 파일
+					      ,A.STB_SHAREYN                                                                 AS STB_SHAREYN       -- 공유여부
+					      ,A.STB_DELETEYN                                                                AS STB_DELETEYN      -- 삭제여부
+					      ,TO_CHAR(A.STB_INSERTDATE,'YYYY-MM-DD')                                        AS STB_INSERTDATE    -- 등록일
+					      ,TO_CHAR(A.STB_UPDATEDATE,'YYYY-MM-DD')                                        AS STB_UPDATEDATE    -- 수정일
+					      ,A.SMB_NO                                                                      AS SMB_NO            -- 회원번호
+					      ,(SELECT B.SMB_ID AS SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO)  AS SMB_ID            -- 아이디
+					      ,CEIL(ROW_NUMBER() OVER(ORDER BY A.STB_NO DESC) / C.SPG_PAGESIZE)              AS SPG_CURPAGE
+					      ,COUNT(A.STB_NO) OVER()                                                        AS SPG_TOTALSIZE
+					      ,C.SPG_PAGESIZE                                                                AS SPG_PAGESIZE
+					      ,C.SPG_GROUPSIZE                                                               AS SPG_GROUPSIZE
+		FROM       		   SPOMATCH_TIPBOARD A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='04') C 
+        WHERE              A.SMB_NO = #{smb_no}
+        AND                A.STB_DELETEYN = 'Y'
+          	<if test="stb_category!=null and stb_category!='' and stb_category!='null' and stb_category!='전체'">
+					<![CDATA[AND		A.STB_CATEGORY = #{stb_category,jdbcType=VARCHAR}]]> 
+				</if>
+				<if test="searchFilter=='제목'">
+					<![CDATA[AND A.STB_SUBJECT LIKE '%' || #{keyword,jdbcType=VARCHAR} || '%']]>
+				</if>
+				<if test="searchFilter=='내용'">
+					<![CDATA[AND A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="searchFilter=='제목+내용'">
+				<![CDATA[AND A.STB_SUBJECT LIKE '%'||#{keyword}||'%']]>
+				<![CDATA[OR A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+		ORDER BY		   A.STB_NO DESC )  L ) LIST	 
+		WHERE 			   SPG_CURPAGE = #{spg_curPage, jdbcType=VARCHAR}  
+	</select>
+	
+	<!-- 팁공유게시판목록 전체조회 -->
+	<select id="listallboard" parameterType="SpoTipBoardVO" resultType="SpoTipBoardVO">
+		SELECT LIST.*
+		FROM ( SELECT L.*, ROWNUM AS STB_ROWNUM
+		FROM (  SELECT
+					       A.STB_NO                                                                      AS STB_NO            -- 글번호
+					      ,A.STB_CATEGORY                                                                AS STB_CATEGORY      -- 카테고리
+					      ,A.STB_SUBJECT                                                                 AS STB_SUBJECT       -- 제목
+					      ,A.STB_VIEWCNT                                                                 AS STB_VIEWCNT       -- 조회수
+					      ,A.STB_GOODCNT                                                                 AS STB_GOODCNT       -- 좋아요
+					      ,A.STB_PW                                                                      AS STB_PW            -- 비밀번호
+					      ,A.STB_CONTENT                                                                 AS STB_CONTENT       -- 내용
+					      ,A.STB_FILE                                                                    AS STB_FILE          -- 파일
+					      ,A.STB_SHAREYN                                                                 AS STB_SHAREYN       -- 공유여부
+					      ,A.STB_DELETEYN                                                                AS STB_DELETEYN      -- 삭제여부
+					      ,TO_CHAR(A.STB_INSERTDATE,'YYYY-MM-DD')                                        AS STB_INSERTDATE    -- 등록일
+					      ,TO_CHAR(A.STB_UPDATEDATE,'YYYY-MM-DD')                                        AS STB_UPDATEDATE    -- 수정일
+					      ,A.SMB_NO                                                                      AS SMB_NO            -- 회원번호
+					      ,(SELECT B.SMB_ID AS SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO)  AS SMB_ID            -- 아이디
+					      ,CEIL(ROW_NUMBER() OVER(ORDER BY A.STB_NO DESC) / C.SPG_PAGESIZE)              AS SPG_CURPAGE
+					      ,COUNT(A.STB_NO) OVER()                                                        AS SPG_TOTALSIZE
+					      ,C.SPG_PAGESIZE                                                                AS SPG_PAGESIZE
+					      ,C.SPG_GROUPSIZE                                                               AS SPG_GROUPSIZE
+		FROM       		   SPOMATCH_TIPBOARD A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='04') C 	
+		 	 <if test="stb_category!=null and stb_category!='' and stb_category!='null' and stb_category!='전체'">
+					<![CDATA[AND		A.STB_CATEGORY = #{stb_category,jdbcType=VARCHAR}]]> 
+				</if>
+				<if test="searchFilter=='제목'">
+					<![CDATA[AND A.STB_SUBJECT LIKE '%' || #{keyword,jdbcType=VARCHAR} || '%']]>
+				</if>
+					<if test="searchFilter=='내용'">
+					<![CDATA[AND A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="searchFilter=='제목+내용'">
+				<![CDATA[AND A.STB_SUBJECT LIKE '%'||#{keyword}||'%']]>
+				<![CDATA[OR A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+		ORDER BY		   A.STB_NO DESC )  L ) LIST	 
+		WHERE 			   SPG_CURPAGE = #{spg_curPage, jdbcType=VARCHAR}  
+	</select>
+	
+	<!-- 팁공유게시판 목록조회 -->
+	<select id="listboard" parameterType="SpoTipBoardVO" resultType="SpoTipBoardVO">
+		SELECT LIST.*
+		FROM ( SELECT L.*, ROWNUM AS STB_ROWNUM
+		FROM (  SELECT
+					       A.STB_NO                                                                      										AS STB_NO            -- 글번호
+					      ,A.STB_CATEGORY                                                               									    AS STB_CATEGORY      -- 카테고리
+					      ,A.STB_SUBJECT                                                                 										AS STB_SUBJECT       -- 제목
+					      ,A.STB_VIEWCNT                                                                 										AS STB_VIEWCNT       -- 조회수
+					      ,A.STB_PW                                                                      										AS STB_PW            -- 비밀번호
+					      ,A.STB_CONTENT                                                                 										AS STB_CONTENT       -- 내용
+					      ,A.STB_FILE                                                                    										AS STB_FILE          -- 파일
+					      ,A.STB_SHAREYN                                                                 										AS STB_SHAREYN       -- 공유여부
+					      ,A.STB_DELETEYN                                                                										AS STB_DELETEYN      -- 삭제여부
+					      ,TO_CHAR(A.STB_INSERTDATE,'YYYY-MM-DD')                                        										AS STB_INSERTDATE    -- 등록일
+					      ,TO_CHAR(A.STB_UPDATEDATE,'YYYY-MM-DD')                                        										AS STB_UPDATEDATE    -- 수정일
+					      ,A.SMB_NO                                                                      										AS SMB_NO            -- 회원번호
+					      ,(SELECT B.SMB_ID AS SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO)  										AS SMB_ID            -- 아이디
+					      ,CEIL(ROW_NUMBER() OVER(ORDER BY A.STB_NO DESC) / C.SPG_PAGESIZE)              										AS SPG_CURPAGE
+					      ,COUNT(A.STB_NO) OVER()                                                        										AS SPG_TOTALSIZE
+					      ,C.SPG_PAGESIZE                                                                										AS SPG_PAGESIZE
+					      ,C.SPG_GROUPSIZE                                                               										AS SPG_GROUPSIZE
+		FROM               SPOMATCH_TIPBOARD A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='04') C 
+		WHERE              A.STB_DELETEYN = 'Y'
+		AND                A.STB_SHAREYN = 'Y'
+			    <if test="stb_category!=null and stb_category!='' and stb_category!='null' and stb_category!='전체'">
+					<![CDATA[AND		A.STB_CATEGORY = #{stb_category,jdbcType=VARCHAR}]]> 
+				</if>
+				<if test="searchFilter=='제목'">
+					<![CDATA[AND A.STB_SUBJECT LIKE '%' || #{keyword,jdbcType=VARCHAR} || '%']]>
+				</if>
+					<if test="searchFilter=='내용'">
+					<![CDATA[AND A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				<if test="searchFilter=='제목+내용'">
+				<![CDATA[AND A.STB_SUBJECT LIKE '%'||#{keyword}||'%']]>
+				<![CDATA[OR A.STB_CONTENT LIKE '%'||#{keyword}||'%']]>
+				</if>
+				
+		ORDER BY        A.STB_NO DESC )  L ) LIST	 
+		WHERE           SPG_CURPAGE = #{spg_curPage, jdbcType=VARCHAR}  
+	</select>
+	
+	<!-- 팁공유게시판 상세조회 -->
+	<select id ="detailboard" parameterType="SpoTipBoardVO" resultType="SpoTipBoardVO">
+        SELECT 
+		           A.STB_NO                                                                     						 										                                       AS STB_NO            -- 글번호
+			      ,A.STB_CATEGORY                                                               						 										                                       AS STB_CATEGORY      -- 카테고리
+			      ,A.STB_SUBJECT                                                                 																                                       AS STB_SUBJECT       -- 제목
+			      ,A.STB_VIEWCNT                                                                						 										                                       AS STB_VIEWCNT       -- 조회수
+			      ,(SELECT COUNT(SG.SGD_GOODYN) AS SGD_GOODYN FROM SPOMATCH_GOOD SG WHERE SG.STB_NO = #{stb_no} AND SGD_GOODYN = 'Y')  							 		                               AS STB_GOODCNT       -- 좋아요
+			      ,NVL((SELECT SG.SGD_GOODYN AS SGD_GOODYN FROM SPOMATCH_GOOD SG WHERE  A.STB_NO = SG.STB_NO AND  A.STB_NO = #{stb_no} AND SG.SMB_NO = #{session_no} AND SG.SGD_GOODYN = 'Y'),'N')     AS MY_GOODYN         -- 나의 좋아요 여부
+			      ,A.STB_PW                                                                     						 									      		                               AS STB_PW            -- 비밀번호
+			      ,A.STB_CONTENT                                                                						 										  		                               AS STB_CONTENT       -- 내용
+			      ,A.STB_FILE                                                                   																                                       AS STB_FILE          -- 파일
+			      ,A.STB_SHAREYN                                                                															   	                                       AS STB_SHAREYN       -- 공유여부
+			      ,A.STB_DELETEYN                                                               						                                                                               AS STB_DELETEYN      -- 삭제여부
+			      ,TO_CHAR(A.STB_INSERTDATE,'YYYY-MM-DD HH24:MI')                               						                                                                               AS STB_INSERTDATE    -- 등록일
+			      ,TO_CHAR(A.STB_UPDATEDATE,'YYYY-MM-DD HH24:MI')                               						                                                                               AS STB_UPDATEDATE    -- 수정일
+			      ,A.SMB_NO                                                                     						                                                                               AS SMB_NO            -- 회원번호
+			      ,(SELECT B.SMB_ID AS SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO) 						                                                                               AS SMB_ID            -- 아이디
+		FROM       SPOMATCH_TIPBOARD A 
+		WHERE	   A.STB_NO = #{stb_no}
+
+
+	</select>
+	
+	<!-- 게시물 등록 -->
+	<insert id="insertboard" parameterType="SpoTipBoardVO">
+		<selectKey keyProperty="stb_no" resultType="String" order="BEFORE">
+			SELECT 'TB'|| LPAD((SELECT 
+			    NVL(MAX(SUBSTR(A.STB_NO,-5)),0)+1 
+			    FROM SPOMATCH_TIPBOARD A),5,'0')
+			FROM DUAL
+		</selectKey>
+		INSERT INTO SPOMATCH_TIPBOARD(
+				STB_NO,           					 -- 글번호
+				STB_CATEGORY,     					 -- 카테고리
+				STB_SUBJECT,                         -- 제목
+				STB_VIEWCNT,                         -- 조회수
+				STB_GOODCNT,                         -- 좋아요   				 
+				STB_PW,           					 -- 비밀번호
+				STB_CONTENT,       					 -- 내용
+				STB_FILE,          					 -- 파일
+				STB_SHAREYN,                         -- 공유여부
+				STB_DELETEYN,                        -- 삭제여부
+				STB_INSERTDATE,                      -- 등록일
+				STB_UPDATEDATE,        	             -- 수정일		
+				SMB_NO  		                     -- 작성자
+		)VALUES(
+				#{stb_no, jdbcType=VARCHAR},         -- 글번호
+				#{stb_category, jdbcType=VARCHAR},   -- 카테고리
+				#{stb_subject, jdbcType=VARCHAR},    -- 제목
+				'0',                                 -- 조회수
+				'0',                                 -- 좋아요
+				#{stb_pw, jdbcType=VARCHAR},         -- 비밀번호
+				#{stb_content, jdbcType=VARCHAR},    -- 내용
+				#{stb_file, jdbcType=VARCHAR},       -- 파일
+				#{stb_shareyn},                      -- 공유여부
+				'Y',                                 -- 삭제여부
+				SYSDATE,                             -- 등록일
+				SYSDATE,                             -- 수정일
+				#{smb_no, jdbcType=VARCHAR}          -- 작성자
+		)
+	</insert>
+	
+	<!-- 게시판 수정 -->
+	<update id="updateboard" parameterType="SpoTipBoardVO">
+		UPDATE SPOMATCH_TIPBOARD A
+    	SET     
+    			A.STB_CATEGORY = #{stb_category, jdbcType=VARCHAR},     				
+				A.STB_SUBJECT = #{stb_subject, jdbcType=VARCHAR},                       					    				
+				A.STB_SHAREYN = #{stb_shareyn, jdbcType=VARCHAR}, 
+				A.STB_CONTENT = #{stb_content, jdbcType=VARCHAR}, 
+				A.STB_FILE = #{stb_file, jdbcType=VARCHAR},          					  
+                A.STB_UPDATEDATE = SYSDATE        	                                  
+    	WHERE   A.STB_NO = #{stb_no, jdbcType=VARCHAR}
+		AND 	A.STB_DELETEYN = 'Y'                                                  
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<update id="deleteboard" parameterType="SpoTipBoardVO">
+		UPDATE SPOMATCH_TIPBOARD A
+		SET 	A.STB_DELETEYN = 'N',
+				A.STB_UPDATEDATE = SYSDATE
+		WHERE   A.STB_NO = #{stb_no, jdbcType=VARCHAR}
+		AND 	A.STB_DELETEYN = 'Y'
+	</update>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace = "kosmo62.spomatch.comment.dao.SpoCommentMapper">
+	<!-- 댓글 전체조회 -->
+	<select id="listallcomment" parameterType="SpoCommentVO" resultType="SpoCommentVO">
+		SELECT * FROM 
+			(   
+			   SELECT
+			               A.SCM_NO                                                AS SCM_NO            -- 댓글번호
+			              ,A.SCM_CONTENT                                           AS SCM_CONTENT       -- 댓글
+			              ,A.SCM_DELETEYN                                          AS SCM_DELETEYN      -- 삭제여부
+			              ,TO_CHAR(A.SCM_INSERTDATE, 'YYYY-MM-DD HH24:MI')         AS SCM_INSERTDATE    -- 등록일
+			              ,TO_CHAR(A.SCM_UPDATEDATE, 'YYYY-MM-DD HH24:MI')         AS SCM_UPDATEDATE    -- 수정일
+			              ,A.STB_NO                                                AS STB_NO            -- 게시판번호
+			              ,A.SMB_NO                                                AS SMB_NO            -- 회원번호
+			              ,B.SMB_ID                                                AS SMB_ID            -- 아이디
+	         	FROM  SPOMATCH_COMMENT A,SPOMATCH_MEMBER B 
+	        	WHERE A.SMB_NO = B.SMB_NO
+	        	AND   A.STB_NO = #{stb_no}
+	         	ORDER BY A.SCM_NO ASC
+   			)
+	</select>
+	<!-- 댓글조회 -->
+	<select id="listcomment" parameterType="SpoCommentVO" resultType="SpoCommentVO">
+		SELECT * FROM 
+			(   
+			   SELECT
+			               A.SCM_NO                                                AS SCM_NO            -- 댓글번호
+			              ,A.SCM_CONTENT                                           AS SCM_CONTENT       -- 댓글
+			              ,A.SCM_DELETEYN                                          AS SCM_DELETEYN      -- 삭제여부
+			              ,TO_CHAR(A.SCM_INSERTDATE, 'YYYY-MM-DD HH24:MI')         AS SCM_INSERTDATE    -- 등록일
+			              ,TO_CHAR(A.SCM_UPDATEDATE, 'YYYY-MM-DD HH24:MI')         AS SCM_UPDATEDATE    -- 수정일
+			              ,A.STB_NO                                                AS STB_NO            -- 게시판번호
+			              ,A.SMB_NO                                                AS SMB_NO            -- 회원번호
+			              ,B.SMB_ID                                                AS SMB_ID            -- 아이디
+	         	FROM  SPOMATCH_COMMENT A,SPOMATCH_MEMBER B 
+	        	WHERE A.SMB_NO = B.SMB_NO
+	        	AND   A.SCM_DELETEYN = 'Y'
+	        	AND   A.STB_NO = #{stb_no}
+	         	ORDER BY A.SCM_NO ASC
+   			)
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertcomment" parameterType="SpoCommentVO">
+		<selectKey keyProperty="scm_no" resultType="String" order="BEFORE">
+			SELECT 'CM'|| LPAD((SELECT 
+			    NVL(MAX(SUBSTR(A.SCM_NO,-5)),0)+1 
+			    FROM SPOMATCH_COMMENT A),5,'0')
+			FROM DUAL
+		</selectKey>
+		INSERT INTO SPOMATCH_COMMENT(
+		               SCM_NO                                              -- 댓글번호
+		              ,SCM_CONTENT                                         -- 댓글
+		              ,SCM_DELETEYN                                        -- 삭제여부
+		              ,SCM_INSERTDATE                                      -- 등록일
+		              ,SCM_UPDATEDATE                                      -- 수정일
+		              ,STB_NO                                              -- 게시판번호
+		              ,SMB_NO                                              -- 회원번호
+	  	)VALUES(
+		              #{scm_no}                                            -- 댓글번호
+		             ,#{scm_content}                                       -- 댓글
+		             ,'Y'                                                  -- 삭제여부
+		             ,SYSDATE                                              -- 등록일
+		             ,SYSDATE                                              -- 수정일
+		             ,#{stb_no}                                            -- 게시판번호
+		             ,#{smb_no}                                            -- 회원번호
+             
+				)
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updatecomment" parameterType="SpoCommentVO">
+		UPDATE SPOMATCH_COMMENT A
+		SET
+		        A.SCM_CONTENT = #{scm_content}
+		       ,A.SCM_UPDATEDATE = SYSDATE
+		WHERE  A.SCM_DELETEYN = 'Y'
+		AND    A.SCM_NO = #{scm_no}
+	</update>
+	
+	<!-- 댓글삭제 -->
+	<update id="deletecomment" parameterType="SpoCommentVO">
+		UPDATE SPOMATCH_COMMENT A
+		SET
+		        A.SCM_DELETEYN = 'N'
+		       ,A.SCM_UPDATEDATE = SYSDATE
+		WHERE  A.SCM_DELETEYN = 'Y'
+		AND    A.SCM_NO = #{scm_no}
+	</update>
+</mapper>

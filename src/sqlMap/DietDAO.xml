@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kosmo62.spomatch.diet.dao.SpoDietMapper">
+	
+	<!-- ==================== 입력 체중 조회 ==================== -->
+	<select id="selectInfo" parameterType="SpoDietVO" resultType="SpoDietVO">
+		SELECT 
+			A.SMB_NO		AS SMB_NO,
+			A.SMB_ID		AS SMB_ID,
+			A.SMB_HEIGHT	AS SMB_HEIGHT,
+			A.SMB_WEIGHT	AS SMB_WEIGHT,
+			A.SMB_G_WEIGHT  AS SMB_G_WEIGHT, 
+			A.SMB_ACTIVITY  AS SMB_ACTIVITY,
+			A.SMB_DAILYCAL 	AS SMB_DAILYCAL
+		FROM
+			(SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) A
+		WHERE
+			A.SMB_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== 체중데이터 입력 ==================== -->
+	<update id="insertWeight" parameterType="SpoDietVO">
+		UPDATE 
+   			SPOMATCH_MEMBER A
+		SET
+		    A.SMB_HEIGHT = #{smb_height},
+		    A.SMB_WEIGHT = #{smb_weight},
+		    A.SMB_G_WEIGHT = #{smb_g_weight},
+		    A.SMB_ACTIVITY = #{smb_activity},
+		    A.SMB_DAILYCAL = #{smb_dailycal},
+		    A.SMB_UPDATEDATE = SYSDATE
+		WHERE 
+		    A.SMB_NO = #{smb_no}
+		AND 
+		    A.SMB_DELETEYN = 'Y'
+	</update>
+	
+	<!-- ==================== 회원정보 조회 ==================== -->
+	<select id="memberInfo" parameterType="SpoDietVO" resultType="SpoDietVO">
+		SELECT
+			A.SMB_NO,
+			A.SMB_ID,
+			A.SMB_DAILYCAL
+		FROM
+			(SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) A
+		WHERE
+			A.SMB_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== 오늘 날짜 식단 조회 ==================== -->
+	<select id="listDiet" parameterType="SpoDietVO" resultType="SpoDietVO">
+		SELECT 
+			A.SDI_NO 		 AS SDI_NO,
+			A.SDI_BREAKFAST  AS SDI_BREAKFAST,
+			A.SDI_LUNCH 	 AS SDI_LUNCH,
+			A.SDI_DINNER 	 AS SDI_DINNER,
+			A.SDI_CAL 	 	 AS SDI_CAL,
+			A.SDI_TAN 		 AS SDI_TAN,
+			A.SDI_DAN 		 AS SDI_DAN,
+			A.SDI_FAT 		 AS SDI_FAT,
+			A.SDI_SUGAR 	 AS SDI_SUGAR,
+			A.SDI_SALT 		 AS SDI_SALT,
+			A.SDI_COL		 AS SDI_COL,
+			A.SDI_FATACID	 AS SDI_FATACID,
+			A.SDI_TRANS		 AS SDI_TRANS,
+			TO_CHAR(A.SDI_DIETDATE,'YYYY/MM/DD') AS SDI_DIETDATE,
+			A.SDI_DELETEYN 	 AS SDI_DELETEYN,
+			A.SDI_INSERTDATE AS SDI_INSERTDATE,
+			A.SDI_UPDATEDATE AS SDI_UPDATEDATE,
+			A.SMB_NO 		 AS SMB_NO,
+			B.SMB_ID		 AS SMB_ID,
+			B.SMB_DAILYCAL 	 AS SMB_DAILYCAL
+		FROM 
+			SPOMATCH_DIET A , (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+        WHERE   
+            TO_CHAR(A.SDI_DIETDATE,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+        AND
+        	A.SMB_NO = #{smb_no}	
+        AND
+        	A.SDI_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== 다른 날짜 식단 조회 ==================== -->
+	<select id="selectDiet" parameterType="SpoDietVO" resultType="SpoDietVO">
+		SELECT 
+			A.SDI_NO 		 AS SDI_NO,
+			A.SDI_BREAKFAST  AS SDI_BREAKFAST,
+			A.SDI_LUNCH 	 AS SDI_LUNCH,
+			A.SDI_DINNER 	 AS SDI_DINNER,
+			A.SDI_CAL 	 	 AS SDI_CAL,
+			A.SDI_TAN 		 AS SDI_TAN,
+			A.SDI_DAN 		 AS SDI_DAN,
+			A.SDI_FAT 		 AS SDI_FAT,
+			A.SDI_SUGAR 	 AS SDI_SUGAR,
+			A.SDI_SALT 		 AS SDI_SALT,
+			A.SDI_COL		 AS SDI_COL,
+			A.SDI_FATACID	 AS SDI_FATACID,
+			A.SDI_TRANS		 AS SDI_TRANS,
+			TO_CHAR(A.SDI_DIETDATE,'YYYY/MM/DD') AS SDI_DIETDATE,
+			A.SDI_DELETEYN 	 AS SDI_DELETEYN,
+			A.SDI_INSERTDATE AS SDI_INSERTDATE,
+			A.SDI_UPDATEDATE AS SDI_UPDATEDATE,
+			A.SMB_NO 		 AS SMB_NO,
+			B.SMB_ID		 AS SMB_ID,
+			B.SMB_DAILYCAL 	 AS SMB_DAILYCAL
+		FROM 
+			SPOMATCH_DIET A , (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+        WHERE   
+            TO_CHAR(A.SDI_DIETDATE,'YYYY/MM/DD') = TO_CHAR(TO_DATE(#{sdi_dietdate}),'YYYY/MM/DD')
+        AND
+        	A.SMB_NO = #{smb_no}	
+        AND
+        	A.SDI_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== 수정할 데이터 조회 ==================== -->
+	<select id="detailDiet" parameterType="SpoDietVO" resultType="SpoDietVO">
+		SELECT 
+			A.SDI_NO 			AS SDI_NO, 
+			A.SDI_BREAKFAST 	AS SDI_BREAKFAST,
+			A.SDI_LUNCH 		AS SDI_LUNCH, 
+			A.SDI_DINNER 		AS SDI_DINNER,
+			A.SDI_CAL			AS SDI_CAL, 
+			A.SDI_TAN			AS SDI_TAN, 
+			A.SDI_DAN			AS SDI_DAN, 
+			A.SDI_FAT			AS SDI_FAT, 
+			A.SDI_SUGAR			AS SDI_SUGAR, 
+			A.SDI_SALT			AS SDI_SALT, 
+			A.SDI_COL			AS SDI_COL,
+			A.SDI_FATACID		AS SDI_FATACID,
+			A.SDI_TRANS			AS SDI_TRANS,
+			TO_CHAR(A.SDI_DIETDATE,'YYYY/MM/DD') AS SDI_DIETDATE, 
+			A.SDI_DELETEYN		AS SDI_DELETEYN, 
+			A.SDI_INSERTDATE	AS SDI_INSERTDATE, 
+			A.SDI_UPDATEDATE	AS SDI_UPDATEDATE, 
+			A.SMB_NO			AS SMB_NO,
+			B.SMB_ID			AS SMB_ID,
+			B.SMB_DAILYCAL 	    AS SMB_DAILYCAL
+		FROM 
+			SPOMATCH_DIET A, (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+		WHERE
+			A.SDI_NO = #{sdi_no}
+		AND 
+			A.SMB_NO = #{smb_no}
+		AND 
+			A.SDI_DIETDATE = TO_DATE(#{sdi_dietdate})
+		AND
+			A.SDI_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== 식단 데이터 입력 ==================== -->
+	<insert id="insertDiet" parameterType="SpoDietVO">
+		<!-- ==================== 채번쿼리 ==================== -->
+		<selectKey keyProperty="sdi_no" resultType="String" order="BEFORE">
+			SELECT 
+			    'D'|| LPAD(
+			    (SELECT /*+ INDEX_DESC(A.DIET_NO_PK) */        
+			     NVL(MAX(SUBSTR(SDI_NO,-5)),0)+1   
+			     FROM SPOMATCH_DIET A),5,'0') 
+			FROM 
+			    DUAL
+		</selectKey>
+		INSERT INTO SPOMATCH_DIET
+		(
+		    SDI_NO,
+		    SDI_BREAKFAST,
+		    SDI_LUNCH,
+		    SDI_DINNER,
+		    SDI_CAL,
+		    SDI_TAN,
+		    SDI_DAN,
+		    SDI_FAT,
+		    SDI_SUGAR,
+		    SDI_SALT,
+		    SDI_COL,
+		    SDI_FATACID,
+		    SDI_TRANS,
+		    SDI_DIETDATE,
+		    SDI_DELETEYN,
+		    SDI_INSERTDATE,
+		    SDI_UPDATEDATE,
+		    SMB_NO
+		)
+		VALUES
+		(
+		    #{sdi_no},
+		    #{sdi_breakfast},
+		    #{sdi_lunch},
+		    #{sdi_dinner},
+		    #{sdi_cal},
+		    #{sdi_tan},
+		    #{sdi_dan},
+		    #{sdi_fat},
+		    #{sdi_sugar},
+		    #{sdi_salt},
+		    #{sdi_col},
+		    #{sdi_fatacid},
+		    #{sdi_trans},
+		    TO_DATE(#{sdi_dietdate}),
+		    'Y',
+		    SYSDATE,
+		    SYSDATE,
+		    #{smb_no}
+		)
+	</insert>
+	
+	<!-- ==================== 식단 데이터 삭제 ==================== -->
+	<update id="deleteDiet" parameterType="SpoDietVO">
+		UPDATE 
+		    SPOMATCH_DIET
+		SET
+		    SDI_DELETEYN = 'N',
+		    SDI_UPDATEDATE = SYSDATE
+		WHERE 
+		    SMB_NO = #{smb_no}
+		AND
+		    TO_CHAR(SDI_DIETDATE,'YYYY/MM/DD') = TO_CHAR(TO_DATE(#{sdi_dietdate}),'YYYY/MM/DD')
+	</update>
+	
+	<!-- ==================== 식단 데이터 수정 ==================== -->
+	<update id="updateDiet" parameterType="SpoDietVO">
+		UPDATE 
+			SPOMATCH_DIET
+		SET
+			SDI_BREAKFAST = #{sdi_breakfast},
+			SDI_LUNCH = #{sdi_lunch},
+			SDI_DINNER = #{sdi_dinner},
+			SDI_CAL = #{sdi_cal},
+			SDI_TAN = #{sdi_tan},
+			SDI_DAN = #{sdi_dan},
+			SDI_FAT = #{sdi_fat},
+			SDI_SUGAR = #{sdi_sugar},
+			SDI_SALT = #{sdi_salt},
+			SDI_COL	= #{sdi_col},	
+			SDI_FATACID	= #{sdi_fatacid},
+			SDI_TRANS = #{sdi_trans},
+			SDI_UPDATEDATE = SYSDATE
+		WHERE
+			SDI_NO = #{sdi_no}
+		AND
+			SMB_NO = #{smb_no}
+		AND 
+			SDI_DIETDATE = TO_DATE(#{sdi_dietdate})
+		AND
+			SDI_DELETEYN = 'Y'
+	</update>
+</mapper>

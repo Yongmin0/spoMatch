@@ -1,0 +1,198 @@
+@charset "UTF-8";
+
+/**************Navbar 회원가입, 아이콘 간격 효과***************/
+.navbar .container .collapse ul li
+{
+	margin: 0px 25px;
+}
+header{
+	margin-top: 70px;
+}
+
+header.masthead {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 4.5rem);
+  /*background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;*/
+}
+
+header.masthead h1 {
+  font-size: 2.25rem;
+  font-family: var(--font-family-kalam);
+}
+@media (min-width: 992px) {
+  header.masthead {
+    height: 100vh;
+    min-height: 40rem;
+    padding-top: 4.5rem;
+    padding-bottom: 0;
+  }
+  header.masthead p {
+    font-size: 1.15rem;
+  }
+  header.masthead h1 {
+    font-size: 3rem;
+  }
+}
+@media (min-width: 1200px) {
+  header.masthead h1 {
+    font-size: 8.5rem;
+  }
+}
+
+section{
+  background-color: var(--light);
+  padding-top: 120px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+section .container .row
+{
+  display: block;
+}
+
+/*********************************회원가입*********************************/
+section div h1
+{
+    text-align: left;
+    padding-top: 30px;
+    padding-bottom:0px;
+    font-size: 2.0rem;
+    font-weight: 500;
+    font-family: var(--font-family-noto);
+    border-bottom: 1.5px solid black;
+}
+
+section div form
+{
+    margin-bottom: 100px;
+    display: block;
+    width: 100%;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+section div form #memberdiv
+{
+    padding: 3.0rem;
+}
+
+section div form .spoMemberForm_item
+{
+    display: flex;
+}
+section div form div .item_name 
+{
+    font-family: var(--font-family-noto);
+    font-size: 15px;
+    font-weight: 600;
+    background-color: #F4F6F9; /*#F4F6F9;*/
+    line-height: 2;
+    width: 260px;
+    height: 75px;
+    padding-top: 19px;
+    padding-bottom: 19px;
+    padding-left: 20px;
+}
+section div form div .ness::before
+{
+    content: '* ';
+    color: #EF3F49;
+    display: inline;
+}
+section div form div .road
+{
+    padding-top: 8px;
+    padding-left: 20px;
+    height: 119px;
+}
+section div form .spoMemberForm_item
+{
+    margin: 5px 0px;
+}
+section div form .spoMemberForm_item input[type=text],
+section div form .spoMemberForm_item input[type=password]
+{
+    font-family: var(--font-family-noto);
+    font-size: 14px;
+    vertical-align: middle;
+    width: 340px;
+    height: 31px;
+    border: 1px solid #dfe5ed;
+}
+
+section div form .spoMemberForm_item .item_content
+{
+    margin-top: 7px;
+    margin-left: 5px;
+    padding: 12px 5px;
+    vertical-align: middle;
+}
+section div form .spoMemberForm_item .item_content select
+{
+    font-family: var(--font-family-noto);
+    font-size: 13px;
+}
+section div form .spoMemberForm_item .gender
+{
+    display: flex;
+}
+section div form .spoMemberForm_item .gender input
+{
+    margin-right: 10px;
+}
+section div form .spoMemberForm_item .gender span
+{
+    font-size: 16px;
+    font-family: var(--font-family-noto);
+    font-weight: 500;
+}
+section div form .spoMemberForm_item .gender .gender_male
+{
+    margin-right: 25px;
+}
+section div form .spoMemberForm_item .gender .gender_female
+{
+    margin-left: 25px;
+}
+section div form .spoMemberForm_item .road_content
+{
+    margin-top: 0px;
+    padding-top: 9px;
+}
+
+section div form .spoMemberForm_item .item_content .item_btn
+{
+    background-color: var(--gray-dark);
+    border-style: none;
+    border-radius: 2px;
+    font-size: 13px;
+    color: var(--white);
+    width: 86px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+section div form .submitbtn
+{
+    margin: 100px 0px;
+    display: flex;
+    justify-content: center;
+}
+section div form .submitbtn input
+{
+    background-color: #ef3f49;
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 500;
+    width: auto;
+    padding: 10px 70px;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-style: none;
+}

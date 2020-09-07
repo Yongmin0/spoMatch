@@ -1,0 +1,344 @@
+@charset "UTF-8";
+/*!
+* Start Bootstrap - Creative v6.0.3 (https://startbootstrap.com/themes/creative)
+* Copyright 2013-2020 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+*/
+/*!
+ * Bootstrap v4.5.0 (https://getbootstrap.com/)
+ * Copyright 2011-2020 The Bootstrap Authors
+ * Copyright 2011-2020 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+:root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #f4623a;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #f4623a;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-kalam: 'Kalam', cursive;
+  --font-family-noto: 'Noto Sans KR', sans-serif;
+  --font-family-nanum: 'Nanum Gothic', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+  display: block;
+}
+
+body{
+  margin: 0;
+  /*font-family: "Merriweather", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";*/
+  font-family: var(--font-family-noto);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+  margin-bottom: 0;
+}
+
+a {
+  color: #f4623a;
+  text-decoration: none;
+  background-color: transparent;
+}
+a:hover {
+  color: #d6370c;
+  text-decoration: underline;
+}
+
+a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+a:not([href]):hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  border-radius: 0;
+}
+
+button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+input,
+button,
+select,
+optgroup,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+[role=button] {
+  cursor: pointer;
+}
+
+select {
+  word-wrap: normal;
+}
+
+button,
+[type=button],
+[type=reset],
+[type=submit] {
+  -webkit-appearance: button;
+}
+
+button:not(:disabled),
+[type=button]:not(:disabled),
+[type=reset]:not(:disabled),
+[type=submit]:not(:disabled) {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner,
+[type=button]::-moz-focus-inner,
+[type=reset]::-moz-focus-inner,
+[type=submit]::-moz-focus-inner {
+  padding: 0;
+  border-style: none;
+}
+
+input[type=radio],
+input[type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.5rem;
+  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/*메뉴 아래 사진부분*/
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+section{
+  background-color: var(--light);
+  padding-top: 120px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
+section h1
+{
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+/****************************************게시판 부분***************************************************/
+/*****카테고리, 제목(+작성자), 검색부분*****/
+/*전체 내용에 font 형식과 글자크기 선언*/
+form,
+form input
+{
+    font-family: var(--font-family-noto);
+    font-size: 14px;
+}
+/*카테고리, 제목(+작성자), 검색부분*/
+form .sub
+{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 35px;
+}
+/*stb_category, sub_subject, 검색어입력란, 검색버튼을 가로배치하기 위한 선언*/
+form .sub .sub_category_subject
+{
+    display: flex;
+}
+
+form .sub .sub_category_subject .sub_category
+{
+    margin-right: 10px;
+}
+
+form .sub .sub_subject
+{
+	margin-left:640px;
+}
+
+/*****게시판 부분*****/
+/*게시판에 대한 width,height 지정*/
+/*내용이 없을 때 footer가 올라오지 못하도록 padding-bottom 지정*/
+/*margin-bottom 쓰면 class="container" 배경색 사용 불가*/
+section .questionBoard
+{
+    width: 100%;
+    height: auto;
+    padding-bottom: 214px;
+}
+/*게시판 제목*/
+section .questionBoard .info
+{
+    border-top: 1px solid rgb(163, 163, 163);
+    background-color: #F4F6F9;
+    margin-bottom: 10px;
+}
+section .questionBoard .info div
+{
+	padding: 5px;
+}
+section .container .questionBoard .info input
+{
+	width: 500px;
+	height: 45px;
+	border-style: none;
+	background: #F4F6F9;
+	padding: 10px;
+}
+section .container .questionBoard .info input:-webkit-autofill {
+	 transition: background-color 5000s ease-in-out 0s;
+	 -webkit-transition: background-color 9999s ease-out;
+     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+     -webkit-text-fill-color: #fff !important;
+}
+/*게시판 내용 부분*/
+section .questionBoard .board_content div #siq_content
+{
+    resize: none;
+    width: 1110px;
+    height: 300px;
+    border-style: none;
+    padding: 10px;
+}
+/*게시판 버튼 부분*/
+section .questionBoard .board_btn
+{
+	margin: 50px 0px;
+	display: flex;
+	justify-content: center;
+}
+section .questionBoard .board_btn input
+{
+	width: 100px;
+	height: 50px;
+	font-size: 16px;
+	font-weight: 600;
+	border-radius: 3px;
+	border-style: none;
+	margin-left: 20px;
+	margin-right: 20px;
+}

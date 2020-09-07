@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kosmo62.spomatch.answer.dao.SpoAnswerMapper">
+	<!-- ============================댓글 목록============================ -->
+	<select id="listAnswer" parameterType="SpoAnswerVO" resultType="SpoAnswerVO">
+		SELECT
+		    	A.SAW_NO AS SAW_NO,
+		    	A.SAW_CONTENT AS SAW_CONTENT,
+		    	A.SAW_DELETEYN AS SAW_DELETEYN,
+		    	TO_CHAR(A.SAW_INSERTDATE, 'YYYY-MM-DD HH24:MI') AS SAW_INSERTDATE,
+		    	TO_CHAR(A.SAW_UPDATEDATE, 'YYYY-MM-DD HH24:MI') AS SAW_UPDATEDATE,
+		    	A.SAW_UPDATEDATE AS SAW_UPDATEDATE,
+			    A.SIQ_NO AS SIQ_NO
+		FROM 
+				SPOMATCH_ANSWER A
+		WHERE 
+				SIQ_NO = #{siq_no}
+		AND
+				SAW_DELETEYN = 'N'
+		ORDER BY 
+				SAW_NO ASC
+
+		
+	</select>
+
+	<!-- ============================댓글 입력============================ -->
+	<insert id="insertAnswer" parameterType="SpoAnswerVO">
+		<selectKey keyProperty="saw_no" resultType="java.lang.String" order="BEFORE">
+			SELECT 'A'||LPAD (
+			    (SELECT /*+INDEX_DESC(ANSWER_NO_PK)*/
+			    NVL(MAX(SUBSTR(SAW_NO,-4)),0)+1 COMMNO  
+			    FROM SPOMATCH_ANSWER
+			),4,'0')FROM DUAL
+		</selectKey>
+			INSERT INTO SPOMATCH_ANSWER A(
+			    A.SAW_NO,
+			    A.SAW_CONTENT,
+			    A.SAW_DELETEYN,
+			    A.SAW_INSERTDATE,
+			    A.SAW_UPDATEDATE,
+			    A.SIQ_NO)
+			VALUES(
+			    #{saw_no,jdbcType=VARCHAR},
+			    #{saw_content,jdbcType=VARCHAR},
+			    'N',
+			    SYSDATE,
+			    SYSDATE,
+			    #{siq_no,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- ============================댓글 수정============================ -->
+	<update id="updateAnswer" parameterType="SpoAnswerVO">
+		UPDATE
+		    	SPOMATCH_ANSWER A
+		SET
+		    	A.SAW_CONTENT = #{saw_content},
+		    	A.SAW_UPDATEDATE = SYSDATE
+		WHERE
+		    	A.SIQ_NO = #{siq_no}
+		AND
+		    	A.SAW_NO = #{saw_no}
+		AND
+		    	A.SAW_DELETEYN = 'N'
+	</update>
+
+	<!-- ============================댓글 삭제============================ -->
+	<update id="deleteAnswer" parameterType="SpoAnswerVO">
+		UPDATE
+		    SPOMATCH_ANSWER A
+		SET
+		    A.SAW_DELETEYN = 'Y',
+		    A.SAW_UPDATEDATE = SYSDATE
+		WHERE
+		    A.SAW_NO = #{saw_no}
+		AND
+		    A.SIQ_NO = #{siq_no}
+		AND
+		    A.SAW_DELETEYN = 'N'
+	</update>
+
+</mapper>

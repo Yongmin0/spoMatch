@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kosmo62.spomatch.apply.dao.SpoApplyMapper">
+	<!-- ====================  신청게시물 전체 조회 ====================  -->
+	<select id="listApply" parameterType="SpoApplyVO" resultType="SpoApplyVO">
+		SELECT * FROM(
+			SELECT
+			    A.SAP_NO AS SAP_NO,
+			    A.SAP_SUBJECT AS SAP_SUBJECT,
+			    A.SAP_AREA AS SAP_AREA,
+			    (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SAP_AREA) AS SAP_AREAVAL,
+			    A.SAP_INTRODUCE AS SAP_INTRODUCE,
+			    A.SAP_ACCEPTYN AS SAP_ACCEPTYN,
+			    A.SAP_DELETEYN AS SAP_DELETEYN,
+			    A.SMC_NO AS SMC_NO,
+			    A.SMB_NO AS SMB_NO,
+		    	(SELECT B.SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO) SMB_ID,
+			    TO_CHAR(A.SAP_INSERTDATE,'YYYY-MM-DD') AS SAP_INSERTDATE, 
+			    TO_CHAR(A.SAP_UPDATEDATE,'YYYY-MM-DD') AS SAP_UPDATEDATE,
+			    CEIL(ROW_NUMBER() OVER(ORDER BY A.SAP_NO DESC) / B.SPG_PAGESIZE) SPG_CURPAGE,
+			    COUNT(A.SAP_NO) OVER() AS SPG_TOTALSIZE,
+			    B.SPG_PAGESIZE AS SPG_PAGESIZE,
+			    B.SPG_GROUPSIZE AS SPG_GROUPSIZE
+			FROM SPOMATCH_APPLY A, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='03') B
+			WHERE SAP_DELETEYN = 'Y'
+			ORDER BY 1 DESC)
+		WHERE SPG_CURPAGE = #{spg_curPage}
+	</select>
+
+	<!-- ====================  마이페이지 내가 등록힌 신청서 리스트 조회 ====================  -->
+	<select id="viewApplyMatch" parameterType="SpoApplyVO" resultType="SpoApplyVO">
+		SELECT * FROM(
+	        SELECT 
+	                A.SAP_NO AS SAP_NO,
+	                A.SAP_SUBJECT AS SAP_SUBJECT,
+	                A.SAP_AREA AS SAP_AREA,
+	                (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SAP_AREA) AS SAP_AREAVAL,
+	                A.SAP_INTRODUCE AS SAP_INTRODUCE,
+	                A.SAP_ACCEPTYN AS SAP_ACCEPTYN,
+	                A.SAP_DELETEYN AS SAP_DELETEYN,
+	                A.SMC_NO AS SMC_NO,
+	                A.SMB_NO AS SMB_NO,
+	                B.SMB_NO AS MATCH_WRITER,
+	                (SELECT D.SMB_ID FROM SPOMATCH_MEMBER D WHERE D.SMB_NO = A.SMB_NO) SMB_ID,
+	                TO_CHAR(A.SAP_INSERTDATE,'YYYY-MM-DD') AS SAP_INSERTDATE, 
+	                TO_CHAR(A.SAP_UPDATEDATE,'YYYY-MM-DD') AS SAP_UPDATEDATE,
+	                CEIL(ROW_NUMBER() OVER(ORDER BY A.SAP_NO DESC) / C.SPG_PAGESIZE) SPG_CURPAGE,
+	                COUNT(A.SAP_NO) OVER() AS SPG_TOTALSIZE,
+	                C.SPG_PAGESIZE AS SPG_PAGESIZE,
+	                C.SPG_GROUPSIZE AS SPG_GROUPSIZE
+	        FROM SPOMATCH_APPLY A, SPOMATCH_MATCH B, (SELECT * FROM SPOMATCH_PAGING WHERE SPG_TABLENO='03') C
+	        WHERE A.SMC_NO = B.SMC_NO
+	        <if test="smc_no != null" >
+	        	AND A.SMC_NO = #{smc_no}
+	        </if>
+	        AND A.SAP_DELETEYN = 'Y'
+	        ORDER BY 1 DESC)
+	    WHERE SPG_CURPAGE = #{spg_curPage}
+			
+	</select>
+	
+	<!-- ====================  신청한 게시물 조회 ====================  -->
+	<select id="viewApply" parameterType="SpoApplyVO" resultType="SpoApplyVO">
+		SELECT
+		    A.SAP_NO AS SAP_NO,
+		    A.SAP_SUBJECT AS SAP_SUBJECT,
+		    A.SAP_AREA AS SAP_AREA,
+		   (SELECT SCD_VALUE FROM SPOMATCH_CODE WHERE SCD_CLASS='LOC' AND SCD_ID= SAP_AREA) AS SAP_AREAVAL,
+		    A.SAP_INTRODUCE AS SAP_INTRODUCE,
+		    A.SAP_ACCEPTYN AS SAP_ACCEPTYN,
+		    TO_CHAR(A.SAP_INSERTDATE,'YYYY-MM-DD') AS SAP_INSERTDATE, 
+			TO_CHAR(A.SAP_UPDATEDATE,'YYYY-MM-DD') AS SAP_UPDATEDATE,
+		    A.SMC_NO AS SMC_NO,
+		    A.SMB_NO AS SMB_NO,
+		    (SELECT B.SMB_ID FROM SPOMATCH_MEMBER B WHERE B.SMB_NO = A.SMB_NO) SMB_ID,
+		    B.SMB_NO AS MATCH_WRITER 													--매칭글 등록자
+		FROM SPOMATCH_APPLY A, SPOMATCH_MATCH B
+		WHERE A.SMC_NO = B.SMC_NO
+		AND A.SMC_NO = #{smc_no}
+		<if test="sap_no != null" >
+			AND A.SAP_NO = #{sap_no}
+		</if> 
+		<if test="smb_no != null" >
+			AND A.SMB_NO = #{smb_no}
+		</if> 
+			AND A.SAP_DELETEYN = 'Y'
+	</select>
+	<!-- ==================== 신청한 리스트 인지 아닌지 조회하는 쿼리  ====================  -->
+	<select id="applyCheckMatch" parameterType="SpoApplyVO" resultType="SpoApplyVO">
+		SELECT * 
+		FROM SPOMATCH_APPLY 
+		WHERE SMB_NO = #{smb_no}
+		AND SMC_NO = #{smc_no}
+		AND SAP_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==================== Matching 신청 쿼리 ====================   -->
+	<insert id="applyMatch" parameterType="SpoApplyVO">
+		<selectKey keyProperty="sap_no" resultType="String" order="BEFORE">
+	    	SELECT 'AP'|| LPAD((SELECT /* +INDEX_DESC(A APPLY_NO_PK) */
+			    NVL(MAX(SUBSTR(A.SAP_NO,-5)),0)+1 
+			    FROM SPOMATCH_APPLY A),5,'0')
+			FROM dual
+	    </selectKey>
+		INSERT INTO SPOMATCH_APPLY (
+		    SAP_NO,         -- 1. 글번호
+		    SMC_NO,         -- 2. 신청할 글번호
+		    SAP_SUBJECT,    -- 3. 제목
+		    SAP_AREA,      	-- 4. 지역
+		    SAP_INTRODUCE,  -- 5. 소개글
+		    SAP_ACCEPTYN,   -- 6. 수락여부
+		    SAP_DELETEYN,   -- 7. 삭제여부
+		    SAP_INSERTDATE, -- 8. 입력일
+		    SAP_UPDATEDATE, -- 9. 수정일
+		    SMB_NO,         -- 10. 신청자
+		    SPG_TABLENO		-- 11. 테이블번호
+		) 
+		VALUES(
+		    #{sap_no},
+		    #{smc_no},
+		    #{sap_subject},
+		    #{sap_area},
+		    #{sap_introduce},
+		    'W',
+		    'Y',
+		    SYSDATE,
+		    SYSDATE,
+		    #{smb_no},
+		    '03'
+		)
+	</insert>
+	
+	<!-- ==================== 신청글 수정 쿼리 ==================== -->
+	<update id="updateApply" parameterType="SpoApplyVO">
+		UPDATE SPOMATCH_APPLY 
+		SET SAP_UPDATEDATE = SYSDATE,
+		    SAP_SUBJECT = #{sap_subject},
+		    SAP_AREA = #{sap_area},
+		    SAP_INTRODUCE = #{sap_introduce},
+		    SAP_ACCEPTYN = #{sap_acceptyn}
+		WHERE SAP_NO = #{sap_no}
+	</update>
+	
+	<!-- ==================== 신청글 삭제 쿼리  ==================== -->
+	<update id="deleteApply" parameterType="SpoApplyVO">
+		UPDATE SPOMATCH_APPLY A
+		SET A.SAP_UPDATEDATE = SYSDATE,
+		    A.SAP_DELETEYN = 'N'
+		WHERE A.SAP_NO = #{sap_no}
+	</update>
+	
+	<!--- ==================== 신청 수락 및 거절 쿼리- ==================== -->
+	<update id="acceptApply" parameterType="SpoApplyVO">
+		UPDATE SPOMATCH_APPLY
+		SET SAP_ACCEPTYN = #{sap_acceptyn}
+		WHERE SAP_NO = #{sap_no}
+	</update>
+</mapper>

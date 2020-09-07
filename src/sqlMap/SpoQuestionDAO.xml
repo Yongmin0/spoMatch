@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kosmo62.spomatch.question.dao.SpoQuestionMapper">
+	<!-- ==========================전체조회========================== -->
+	
+	<select id="listBoard" parameterType="SpoQuestionVO" resultType="SpoQuestionVO">
+		SELECT 
+			   A.SIQ_NO	AS SIQ_NO,
+			   (SELECT SMB_ID FROM SPOMATCH_MEMBER WHERE SMB_NO = A.SMB_NO) AS SMB_ID,
+			   A.SIQ_SUBJECT AS SIQ_SUBJECT,
+			   A.SIQ_CONTENT AS SIQ_CONTENT,
+			   A.SIQ_DELETEYN AS SIQ_DELETEYN,
+			   TO_CHAR(A.SIQ_INSERTDATE, 'YYYY-MM-DD') AS SIQ_INSERTDATE,
+			   TO_CHAR(A.SIQ_UPDATEDATE, 'YYYY-MM-DD') AS SIQ_UPDATEDATE,
+			   A.SMB_NO AS SMB_NO,
+			   A.SPG_TABLENO AS SPG_TABLENO,
+			   (SELECT COUNT(*) FROM SPOMATCH_ANSWER C WHERE A.SIQ_NO = C.SIQ_NO AND C.SAW_DELETEYN = 'Y') AS ANCNT
+		FROM 
+			   SPOMATCH_INQUIRE A, (SELECT * FROM SPOMATCH_MEMBER WHERE SMB_NO = #{smb_no}) B
+		WHERE
+			   A.SIQ_DELETEYN = 'Y'
+		AND 	
+			   A.SMB_NO = #{smb_no} 
+	</select>
+
+	
+	<!-- ==========================상세조회========================== -->
+	<select id="detailBoard" parameterType="SpoQuestionVO" resultType="SpoQuestionVO">
+		SELECT
+			  A.SIQ_NO,
+			  A.SIQ_SUBJECT,
+			  A.SIQ_CONTENT,
+              A.SIQ_DELETEYN,
+			  A.SIQ_INSERTDATE,
+			  A.SIQ_UPDATEDATE,
+			  A.SMB_NO,
+			  (SELECT SMB_ID FROM SPOMATCH_MEMBER WHERE SMB_NO = A.SMB_NO) AS SMB_ID,
+              A.SPG_TABLENO
+		FROM 
+		 	  SPOMATCH_INQUIRE A
+		WHERE  
+			  SIQ_NO = #{siq_no}
+		AND
+			  SIQ_DELETEYN = 'Y'
+	</select>
+	
+	<!-- ==========================입력========================== -->
+	
+	<insert id="insertBoard" parameterType="SpoQuestionVO">
+		<selectKey keyProperty="siq_no" resultType="java.lang.String" order="BEFORE">
+			SELECT 'Q'||LPAD (
+			    (SELECT /*+INDEX_DESC(INQUIRE_NO_PK)*/
+			    NVL(MAX(SUBSTR(SIQ_NO,-4)),0)+1COMMNO  
+			    FROM SPOMATCH_INQUIRE A
+			),4,'0')FROM DUAL
+		</selectKey>
+			INSERT INTO SPOMATCH_INQUIRE
+				(
+					SIQ_NO, 
+					SIQ_SUBJECT, 
+					SIQ_CONTENT, 
+					SIQ_DELETEYN, 
+					SIQ_INSERTDATE, 
+					SIQ_UPDATEDATE,
+					SMB_NO,
+					SPG_TABLENO
+				)
+			VALUES
+				(
+					#{siq_no}, 
+					#{siq_subject}, 
+					#{siq_content}, 
+					'Y', 
+					SYSDATE, 
+					SYSDATE, 
+					#{smb_no},
+					'06'
+				)
+	</insert>
+	<!-- ==========================수정========================== -->
+	<update id="updateBoard" parameterType="SpoQuestionVO">
+		UPDATE
+				SPOMATCH_INQUIRE A
+		SET
+				A.SIQ_SUBJECT = #{siq_subject},
+				A.SIQ_CONTENT = #{siq_content},
+				A.SIQ_UPDATEDATE = SYSDATE
+		WHERE
+				A.SIQ_NO = #{siq_no}
+		AND 
+				A.SIQ_DELETEYN = 'Y'
+	</update>
+	
+	<!-- ==========================삭제========================== -->
+	<update id="deleteBoard" parameterType="SpoQuestionVO">
+		UPDATE
+				SPOMATCH_INQUIRE A
+		SET
+				A.SIQ_DELETEYN = 'N',
+				A.SIQ_UPDATEDATE = SYSDATE
+	 	WHERE
+				A.SIQ_NO = #{siq_no}
+	</update>
+	
+
+</mapper>
