@@ -177,8 +177,8 @@
 			if(i == 0 || (i > 0 && data[i-1].sch_insertdate != data[i].sch_insertdate)){
 				messageContent += "<div class='message-date-check'><span>" + data[i].sch_insertdate + "</span></div>";
 			}
-			// 불러온 채팅 내용의 받는이가 현재 접속한 회원 no일 경우
-			if(data[i].sch_resiver == "<%=String.valueOf(session.getAttribute("smb_no")) %>"){
+			// 불러온 채팅 내용의 보낸이가 현재 접속한 회원 no이 아닐 경우
+			if(data[i].smb_no != "<%=String.valueOf(session.getAttribute("smb_no")) %>"){
 				messageContent += "<div class='messages'>";
 				messageContent += "<div class='messages-photo'><i class='far fa-user-circle fa-3x'></i></div>";
 				messageContent += "<div class='messages-about'>";

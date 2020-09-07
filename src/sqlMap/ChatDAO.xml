@@ -31,25 +31,30 @@
    </select>
    
    
+   <!-- ======================================================= -->
+   <!-- 				2020.09.05 문성아 수정						-->
+   <!-- 			단체채팅 보낼경우 여러개 뜨는 오류 수정					-->
+   <!-- ======================================================= -->
+   
    <!-- ==================== 채팅방 선택 조회 ====================== -->
    <select id="selectChat" parameterType="SpoChatVO" resultType="SpoChatVO">
         SELECT 
-          A.SMC_NO AS SMC_NO,                                                      -- 매칭글 번호
+          A.SMC_NO AS SMC_NO,                                                      					-- 매칭글 번호
           (SELECT B.SMC_SUBJECT FROM SPOMATCH_MATCH B WHERE A.SMC_NO = B.SMC_NO) AS SMC_SUBJECT,   -- 매칭글 제목
-          A.SMB_NO AS SMB_NO,                                                      -- 매칭글 등록자 NO
-          (SELECT B.SMB_ID FROM SPOMATCH_MEMBER B WHERE A.SMB_NO = B.SMB_NO) AS SMB_ID,         -- 매칭글 등록자 ID
-          A.SCH_NO AS SCH_NO,                                                      -- 발신자 NO
-          A.SCH_RESIVER   AS SCH_RESIVER,                                             -- 수신자 NO         
-          A.SCH_CHAT AS SCH_CHAT,                                                   -- 발신메세지
-          A.SCH_CHECKYN AS SCH_CHECKYN,                                             -- 안읽음여부
-          A.SCH_DELETEYN AS SCH_DELETEYN,                                             -- 삭제 여부
-          TO_CHAR(A.SCH_INSERTDATE,'YYYY-MM-DD') AS SCH_INSERTDATE,                        -- 입력일
-          TO_CHAR(A.SCH_INSERTDATE,'HH24:MI') AS SCH_INSERTTIME,                           -- 입력일
-          A.SCH_UPDATEDATE  AS SCH_UPDATEDATE                                        -- 수정일
+          A.SMB_NO AS SMB_NO,                                                      					-- 매칭글 등록자 NO
+          (SELECT B.SMB_ID FROM SPOMATCH_MEMBER B WHERE A.SMB_NO = B.SMB_NO) AS SMB_ID,     		-- 매칭글 등록자 ID
+          --A.SCH_RESIVER   AS SCH_RESIVER,                                            				-- 수신자 NO         
+          A.SCH_CHAT AS SCH_CHAT,                                                   				-- 발신메세지
+          --A.SCH_CHECKYN AS SCH_CHECKYN,                                             				-- 안읽음여부
+          A.SCH_DELETEYN AS SCH_DELETEYN,                                             				-- 삭제 여부
+          TO_CHAR(A.SCH_INSERTDATE,'YYYY-MM-DD') AS SCH_INSERTDATE,                         		-- 입력일
+          TO_CHAR(A.SCH_INSERTDATE,'HH24:MI') AS SCH_INSERTTIME	                            		-- 입력일
+          --A.SCH_UPDATEDATE  AS SCH_UPDATEDATE                                        				-- 수정일
        FROM SPOMATCH_CHAT A
        WHERE A.SMC_NO = #{smc_no }
        AND #{sch_resiver} = ANY (A.SMB_NO, A.SCH_RESIVER)
-       ORDER BY SCH_NO ASC
+       GROUP BY A.SMC_NO, A.SMB_NO, A.SCH_CHAT, A.SCH_DELETEYN, A.SCH_INSERTDATE
+       ORDER BY SCH_INSERTDATE ASC
    </select>
    
    <!-- ====================  메세지 보내는 쿼리  =======================  -->
