@@ -63,10 +63,16 @@
 {
     width: 116%;
 }
+.header_pic .header_pic2
+{
+    background-image: url(/spoMatch/img/loginOK/header/header1.jpg);
+    background-size: contain;
+    background-attachment: fixed;
+}
 .header_text
 {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform:translate(-50%, -50%);
     color: var(--white);
@@ -77,6 +83,14 @@
     font-size: 157px;
     letter-spacing: 0.5px;
     font-family: var(--font-family-monospace);
+}
+.sub_text::after{
+	content: "";
+    width: 2px;
+    height: 90px;
+    display: block;
+    margin: 15px auto 0;
+    background: rgba(255,255,255, 0.74);
 }
 section{
 	padding-top:0px;
