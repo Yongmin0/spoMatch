@@ -8,6 +8,7 @@
     <title>Main</title>
     <!--css-->
     <link href="/spoMatch/css/loginOK.css" rel="stylesheet" type="text/css"/>
+    
 </head>
 <body>
 
@@ -18,9 +19,9 @@
     <div id="header">
         <!--사진부분-->
         <div class="header_pic">
-            <div><img class="header_pic1" src="/spoMatch/img/loginOK/header/header4.jpg" /></div>
-            <div><img src="/spoMatch/img/loginOK/header/header1.jpg" /></div>
-            <div><img src="/spoMatch/img/loginOK/header/header5.jpg" /></div>
+            <div><img class="header_pic1" src="img/loginOK/header/header4.jpg" /></div>
+            <div class="header_pic2"></div>
+            <div class="header_pic3"><img src="img/loginOK/header/header5.jpg" /></div>
         </div>
         <!--글자부분-->
         <div class="header_text">
@@ -40,12 +41,12 @@
         <!--gallery 사진부분-->
         <div class="gallery">
             <div class="gallery_first" >
-                <div class="first_1"><img src="/spoMatch/img/loginOK/gallery/gallery1.jpg" ></div>
-                <div class="first_2"><img src="/spoMatch/img/loginOK/gallery/gallery2.jpg" ></div>
+                <div class="first_1"><img src="img/loginOK/gallery/gallery1.jpg" ></div>
+                <div class="first_2"><img src="img/loginOK/gallery/gallery2.jpg" ></div>
             </div>
             <div class="gallery_second">
-                <div class="second_1"><img src="/spoMatch/img/loginOK/gallery/gallery3.jpg" alt=""></div>
-                <div class="second_2"><img src="/spoMatch/img/loginOK/gallery/gallery4.jpg" alt=""></div>
+                <div class="second_1"><img src="img/loginOK/gallery/gallery3.jpg" alt=""></div>
+                <div class="second_2"><img src="img/loginOK/gallery/gallery4.jpg" alt=""></div>
             </div>
         </div>
     </div>
